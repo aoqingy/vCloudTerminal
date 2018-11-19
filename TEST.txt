@@ -1,0 +1,6 @@
+1. IDV start on boot
+2. IDV software disk
+3. IDV PCI modification
+4. IDV CPU & memory may exceed the available value
+5. System Upgrade Promption not correct
+

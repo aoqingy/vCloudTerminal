@@ -1,0 +1,172 @@
+1.16.2
+* Modify Setting Permission
+1.16.1
+* USB sharing with NAT
+1.16.0
+* Try Add IDV Logic
+1.15.21
+* Refind UUID Generation Policy
+1.15.20
+* Fix Quitting VMware Desktop bug
+1.15.19
+* Analysis save/restore log
+1.15.18
+* Add UEFI support
+1.15.17
+* Redefine vClassTerminal UUID
+* Replace os.removedirs with shutil.rmtree to solve /mnt missing issue
+* Add software running mode (physical/virtual, etc)
+* Refine license mechanism
+1.15.16
+* Make direct installation on Ubuntu 16.04.3
+1.15.15
+* Record boot log
+1.15.14
+* Update deb packages
+1.15.13
+* Rewrite myfirefox logic
+* Use parallel processing for save
+1.15.12
+* Add tag
+* Change trial days to 0 
+* Recheck subprocess.Popen
+1.15.11
+* Receive file and save into home directory
+1.15.10
+* Update Linux Kernel Package of Target System (and that of Build Environment)
+1.15.9
+* Move myfirefox.desktop to firefox install.sh
+1.15.8
+* Mount device to temporary directory instead of /mnt
+1.15.7
+* Solve Display Reset Issue on the Build Environment
+1.15.6
+* Check License Mode
+1.15.5
+* Refine make_iso.sh (redirect to file for hashsum error)
+1.15.4
+* Version for Changzhou Telcom (to test Citrix)
+1.15.1
+* Refine software packages
+1.15.0
+* Prepare to refine license management
+1.14.2
+* Change Password Logic to Protect Settings
+1.14.1
+* Retrieve MAC address for terminal wakeup
+1.14.0
+* Prepare to integrate VMware Client
+1.13.4
+* Version for Guangzhou Cloudoffice
+1.13.3
+* Move /etc/apt/sources.list
+1.13.2
+* Refine Usb Redirection Server
+1.13.1
+* Add Usb Redirection Server
+1.12.17
+* Add ICA association in Firefox
+1.12.16
+* Change to CITRIX Desktop
+1.12.15
+* Disable Firefox app & extensions update
+1.12.14
+* Disable firefox auto-update
+1.12.13
+* Try to solve firefox auto-update issue
+1.12.12
+* Add changelog.txt in the release code
+1.12.11
+* Modify make_update.sh for upgrade
+1.12.10
+* Combine MOTHERBOARD UUID and DISK SN to generate Host UUID
+1.12.7
+* Modify MAC to UUID
+1.12.6
+* Refine codes
+1.12.5
+* Refine codes
+1.12.4
+* Ready for test
+1.12.3
+* USB Serial check
+1.12.2
+* Upgrade Logic re-added
+1.12.1
+* UEFI OK!
+1.12.0
+* Rewrite the ISO Making Flow on Ubuntu 16.04.3
+1.11.3
+* Show Mac Address in Main GUI
+1.11.2
+* Recheck deplist
+1.11.1
+* Add Virtual Keyboard
+1.11.0
+* Recheck & Update Package List
+1.10.5
+* Auto check NTFS integrity while saving
+1.10.4
+* Add Win Param Update Lgic
+1.10.3
+* Modify list & change boot loader logic 
+1.10.2
+* Improve VirtAPI
+1.10.1
+* Cython
+1.9.9
+* Change booot loader by backup via easybcd
+1.9.8
+* List & change boot loader
+1.9.7
+* Add multicast-restore
+1.9.6
+* Review P2P/P2V/V2P codes
+1.9.5
+* Save to & restore from nfs server
+1.9.4
+* CloneZilla-based P2P sync
+1.9.3
+* Query free disks and partitions
+1.9.2
+* Implement local save and restore
+1.9.0
+* Add CloneZilla package
+1.8.9
+* Refine saving & applying ip, setting ip from vCloudEngine
+1.8.8
+* Add P2V & V2P
+1.8.6
+* v1.8.6 Release
+1.8.4
+* Refine partition listing
+1.8.3
+* Add nfs-based synchronization
+1.8.2
+* Add open-iscsi, initramfs-tools, sysv-rc-conf package
+1.8.1
+* Add unityshell plugin management script
+1.8.0
+* Add nfs-common debian packages in
+
+1.7.9
+* Sync OK!
+1.7.8
+* Start to check image.stat several seconds after btdnld is called...
+1.7.7
+* Make sure torrent is downloaded before continue...
+1.7.6
+* Use partclone.ntfs in sync
+1.7.5
+* Add partclone debian package in
+1.7.4
+* Regenerate /NST/nst_linux.mbr after sync.
+1.7.3
+* Sync OK in VMware Virtual Machine (3 targets)
+1.7.2
+* Debug sync error problem
+* Resize screen jpg with mogrify (from 140K to 2K about)
+1.7.1:
+* Modify screen_shot.sh to save into small png size;
+
+

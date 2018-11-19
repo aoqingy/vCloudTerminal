@@ -1,0 +1,83 @@
+Starting /usr/sbin/ocs-sr at 2017-12-11 22:21:56 CST...
+*****************************************************.
+Clonezilla image dir: /home/partimag
+The selected devices: sdb
+The selected devices: sdb
+Searching for data partition(s)...
+Searching for swap partition(s)...
+The data partition to be saved:   sdb1 sdb5
+The swap partition to be saved:  
+The selected devices: sdb1 sdb5
+Saving block devices info in /home/partimag/image/blkdev.list...
+Saving block devices attributes in /home/partimag/image/blkid.list...
+Checking the integrity of partition table in the disk /dev/sdb... 
+Reading the partition table for /dev/sdb...RETVAL=0
+*****************************************************.
+The first partition of disk /dev/sdb starts at 2048.
+Saving the hidden data between MBR (1st sector, i.e. 512 bytes) and 1st partition, which might be useful for some recovery tool, by:
+dd if=/dev/sdb of=/home/partimag/image/sdb-hidden-data-after-mbr skip=1 bs=512 count=2047
+2047+0 records in
+2047+0 records out
+1048064 bytes (1.0 MB, 1.0 MiB) copied, 0.0963869 s, 10.9 MB/s
+*****************************************************.
+Saving the MBR data for sdb...
+1+0 records in
+1+0 records out
+512 bytes copied, 0.000292401 s, 1.8 MB/s
+Starting saving /dev/sdb1 as /home/partimag/image/sdb1.XXX...
+/dev/sdb1 filesystem: ntfs.
+*****************************************************.
+*****************************************************.
+Use partclone with pigz to save the image.
+Image file will be split with size limit 4000 MB.
+*****************************************************.
+If this action fails or hangs, check:
+* Is the disk full ?
+*****************************************************.
+Run partclone: partclone.ntfs -z 10485760 -L /var/log/partclone.log -c -s /dev/sdb1 --output - | pigz -c --fast -b 1024 -p 16 -R | split -b 4000m - /home/partimag/image/sdb1.ntfs-ptcl-img.gz. 2> /tmp/split_error.iK0hAX
+Partclone v0.2.86 http://partclone.org
+Starting to clone device (/dev/sdb1) to image (-)
+Reading Super Block
+ntfsclone-ng.c: NTFS Volume '/dev/sdb1' is scheduled for a check or it was shutdown
+uncleanly. Please boot Windows or fix it by fsck.
+Failed to use partclone program to save or restore an image!
+*****************************************************.
+Failed to save partition /dev/sdb1.
+Starting saving /dev/sdb5 as /home/partimag/image/sdb5.XXX...
+/dev/sdb5 filesystem: ext4.
+*****************************************************.
+*****************************************************.
+Use partclone with pigz to save the image.
+Image file will be split with size limit 4000 MB.
+*****************************************************.
+If this action fails or hangs, check:
+* Is the disk full ?
+*****************************************************.
+Run partclone: partclone.ext4 -z 10485760 -L /var/log/partclone.log -c -s /dev/sdb5 --output - | pigz -c --fast -b 1024 -p 16 -R | split -b 4000m - /home/partimag/image/sdb5.ext4-ptcl-img.gz. 2> /tmp/split_error.orQ0fF
+Partclone v0.2.86 http://partclone.org
+Starting to clone device (/dev/sdb5) to image (-)
+Reading Super Block
+we need memory: 336100 bytes
+image head 4160, bitmap 327840, crc 4100 bytes
+Calculating bitmap... Please wait... done!
+File system:  EXTFS
+Device size:   10.7 GB = 2622720 Blocks
+Space in use:   5.2 GB = 1277647 Blocks
+Free Space:     5.5 GB = 1345073 Blocks
+Block size:   4096 Byte
+Total block 2622720
+Syncing... OK!
+Partclone successfully cloned the device (/dev/sdb5) to the image (-)
+>>> Time elapsed: 187.34 secs (~ 3.122 mins)
+*****************************************************.
+Finished saving /dev/sdb5 as /home/partimag/image/sdb5.ext4-ptcl-img.gz
+*****************************************************.
+End of saveparts job for image /home/partimag/image.
+*****************************************************.
+End of savedisk job for image image.
+Checking if udevd rules have to be restored...
+This program is not started by Clonezilla server, so skip notifying it the job is done.
+Finished!
+Now syncing - flush filesystem buffers...
+
+Ending /usr/sbin/ocs-sr at 2017-12-11 22:25:33 CST...

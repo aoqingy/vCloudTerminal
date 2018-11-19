@@ -1,0 +1,14 @@
+prefix=/opt/
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: spice
+Description: SPICE server library
+Version: 0.12.6
+
+Requires: spice-protocol >= 0.12.10
+Requires.private:  libcacard >= 0.1.2 glib-2.0 >= 2.22 pixman-1 >= 0.17.7 x264 >= 0.148.2 libswscale >= 3.1.101 libmfx >= 1.16.4.2 openssl
+Libs: -L${libdir} -lspice-server
+Libs.private:  -pthread -lm -lrt
+Cflags: -I${includedir}/spice-server

@@ -1,0 +1,11 @@
+prefix=/opt/
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: libmfx
+Description: Intel Media SDK Dispatched static library
+Version: 1.19
+Libs: -L${libdir} -lmfx -lstdc++ -ldl -lva-drm -lva -lva-x11 -lva
+Libs.private:
+Cflags: -I${includedir}

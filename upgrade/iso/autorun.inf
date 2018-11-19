@@ -1,0 +1,8 @@
+[autorun]
+icon=virtfan.ico
+label=vClassTerminal
+
+[Content]
+MusicFiles=false
+PictureFiles=false
+VideoFiles=false

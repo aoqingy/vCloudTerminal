@@ -1,0 +1,24 @@
+""
+  Control + Shift + q
+""
+  Alt + v
+""
+  Alt + f
+""
+  Alt + e
+""
+  Alt + s
+""
+  Alt + t
+""
+  Alt + h
+""
+  Shift + F7
+""
+  Shift + F10
+"poweroff"
+  XF86PowerOff
+"terminal.sh"
+  Control + Shift + Alt + t
+"terminal-switch.sh"
+  Control + Shift + Alt + backslash

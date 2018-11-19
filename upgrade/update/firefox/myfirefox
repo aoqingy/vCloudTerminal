@@ -1,0 +1,101 @@
+#!/bin/bash
+
+log_file="/var/www/vfd/log/boot.log.`date +%Y%m%d`.log"
+touch ${log_file}
+date >> ${log_file}
+
+echo "Entering..." >> ${log_file}
+touch /root/.vflock
+
+#以下命令放在这里没起作用，放在服务里面才行
+#sed -i 's/^autologin-user=.*/autologin-user=root/g' /etc/lightdm/lightdm.conf
+
+#以下命令放在服务里面没起作用，放在这里才行
+#/var/www/vfd/log/initial是源码里特意生成的一个空文件
+#这个文件的目的是针对EXT2异常断电情况下开机文件系统自检
+#它用于判断系统是否是首次启动，若是，修改GRUB引导项
+#此功能只对EXT2文件系统安装有效，
+#若要启用该功能，去掉下面的注释
+#[[ -f /var/www/vfd/log/initial ]] && {
+#    echo "Removing initial file..." >> ${log_file}
+#    rm -f /var/www/vfd/log/initial
+#
+#    #echo "Updating grub file..." >> ${log_file}
+#    #sed -i '/linux\t/s/$/ forcefsck fsckfix/g' /boot/grub/grub.cfg
+#}
+
+#禁止软件更新
+echo "Disabling software update..." >> ${log_file}
+mv /etc/apt/sources.list /var/www/vfd/
+mv /etc/apt/sources.list.d/virtfan.list /var/www/vfd/
+mv /boot/grub/grubenv /var/www/vfd/
+
+#创建数据库
+[[ -f /var/www/vfd/vfd.db ]] || {
+    echo "Creating database..." >> ${log_file}
+    cat /var/www/vfd/vfd.sql | sqlite3 /var/www/vfd/vfd.db
+}
+
+#启动VNC后台服务，将这提前是为了在云终端代码出现问题时也能远程诊断(aoqingy)
+echo "Starting vnc server..." >> ${log_file}
+python /var/www/vfd/vncserver.py &
+
+#启动异步任务线程
+celery worker -l INFO -c 10 -A task.celery --workdir=/var/www/vfd/ &
+
+#启动云终端主程序
+while :
+do
+    echo "Starting main server..." >> ${log_file}
+    python /var/www/vfd/main.py &
+    sleep 1
+    if lsof -i tcp:80; then
+        break
+    fi
+done
+
+##解决接入VMware云桌面的问题
+#[[ -f /usr/lib/vmware/view/vdpService/libmksvchanclient.so ]] && {
+#    rm /usr/lib/vmware/view/vdpService/libmksvchanclient.so
+#}
+
+#运行Firefox浏览器
+echo "Starting firefox..." >> ${log_file}
+cp -a /var/firefox /root/.mozilla/
+/usr/bin/firefox -P ${2:-default} ${1:-localhost} &  #放在后台运行，否则下面的代码不会执行（aoqingy）
+
+#计算时间
+echo "Recalculating software time..." >> ${log_file}
+rm -f /var/www/vfd/counter/USE_TIME
+touch /var/www/vfd/counter/USE_TIME
+bash /var/www/vfd/counter/poweroff_time.sh
+
+#删除过期日志
+echo "Removing expired logs..." >> ${log_file}
+find /var/www/vfd/log/vfd.log.* -mtime +7 -exec rm {} \;
+find /var/www/vfd/log/boot.log.* -mtime +7 -exec rm {} \;
+
+#服务管理
+echo "Disabling services..." >> ${log_file}
+systemctl disable ssh
+systemctl disable systemd-timesyncd
+systemctl stop ssh
+systemctl stop systemd-timesyncd
+
+#X窗口范围控制
+echo "Granting X access control..." >> ${log_file}
+xhost +
+
+#声音设置
+echo "Configuring sound parameter..." >> ${log_file}
+pulseaudio --start
+amixer -D pulse sset Master 100% unmute
+amixer -D pulse sset Capture 100% unmute
+
+#将显示编号写到文件中，以便后续脚本使用
+echo "Writing display number..." >> ${log_file}
+echo "declare -x `env | grep DISPLAY`" | tee /var/www/vfd/script/vf_display.sh
+
+rm -rf /root/.vflock
+echo "Exiting..." >> ${log_file}
+

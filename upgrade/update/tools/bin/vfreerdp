@@ -1,0 +1,126 @@
+#!/usr/bin/python
+# Create your views here.
+#-*- coding: UTF-8 -*-
+
+import sys
+
+from subprocess import Popen
+
+#screen mode id:i:2			//Done
+#desktopwidth:i:1366
+#desktopheight:i:667
+#session bpp:i:32			//Done
+#winposstr:s:0,3,0,0,800,600
+#compression:i:1			//Done
+#keyboardhook:i:2
+#audiocapturemode:i:0
+#videoplaybackmode:i:1
+#connection type:i:2
+#displayconnectionbar:i:1
+#disable wallpaper:i:1			//Done
+#allow font smoothing:i:1
+#allow desktop composition:i:0
+#disable full window drag:i:1		//Done
+#disable menu anims:i:1			//Done
+#disable themes:i:0			//Done
+#disable cursor setting:i:0
+#bitmapcachepersistenable:i:1
+#audiomode:i:0				//Done
+#disableconnectionsharing:i:0
+#redirectprinters:i:1			//Done
+#redirectcomports:i:1
+#redirectsmartcards:i:1
+#redirectclipboard:i:1			//Done
+#redirectposdevices:i:0
+#redirectdirectx:i:1
+#devicestoredirect:s:*
+#drivestoredirect:s:*
+#autoreconnection enabled:i:1
+#authentication level:i:0
+#prompt for credentials:i:0
+#negotiate security layer:i:1
+#disableremoteappcapscheck:i:1
+#alternate shell:s:rdpinit.exe
+#shell working directory:s:
+#gatewayhostname:s:
+#gatewayusagemethod:i:4
+#gatewaycredentialssource:i:4
+#gatewayprofileusagemethod:i:0
+#promptcredentialonce:i:1
+#use redirection server name:i:0
+#workspace id:s:192.168.0.118
+#full address:s:192.168.0.118
+#server port:i:3389			//Done
+#username:s:aoqingy			//Done
+#password:s:123456			//Done
+#domain:s:virtfan.com			//Done
+
+def parseRdp(rdpfile):
+    f = open(rdpfile, 'r')
+    rs = {}
+    for line in f:
+        line = line.strip()
+        if line.startswith('#') or not line:
+            continue
+        try:
+            d = line.strip().split(':')
+            rs[d[0]] = {}
+            rs[d[0]]['t'] = d[1]
+            rs[d[0]]['v'] = d[2]
+        except Exception, e:
+            pass
+    f.close()
+    return rs
+
+
+def buildCmd(rdpdict):
+    cmd = ['xfreerdp', '/cert-ignore']
+    if 'disable full window drag' in rdpdict.keys() and rdpdict['disable full window drag']['t'] == 'i' and rdpdict['disable full window drag']['v'] == '0':
+        cmd.append('/window-drag')
+    if 'disable menu anims' in rdpdict.keys() and rdpdict['disable menu anims']['t'] == 'i' and rdpdict['disable menu anims']['v'] == '0':
+        cmd.append('/menu-anims')
+    if 'disable themes' in rdpdict.keys() and rdpdict['disable themes']['t'] == 'i' and rdpdict['disable themes']['v'] == '0':
+        cmd.append('/themes')
+    if 'disable wallpaper' in rdpdict.keys() and rdpdict['disable wallpaper']['t'] == 'i' and rdpdict['disable wallpaper']['v'] == '0':
+        cmd.append('/wallpaper')
+    #if 'compression' in rdpdict.keys() and rdpdict['compression']['t'] == 'i' and rdpdict['compression']['v'] == '1':
+    #    cmd.append('/compression')
+    if 'screen mode id' in rdpdict.keys() and rdpdict['screen mode id']['t'] == 'i' and rdpdict['screen mode id']['v'] == '2':
+        cmd.append('/f')
+    if 'session bpp' in rdpdict.keys() and rdpdict['session bpp']['t'] == 'i':
+        cmd.append('/bpp:' + rdpdict['session bpp']['v'])
+    if 'server port' in rdpdict.keys() and rdpdict['server port']['t'] == 'i':
+        cmd.append('/port:' + rdpdict['server port']['v'])
+    if 'username' in rdpdict.keys() and rdpdict['username']['t'] == 's':
+        cmd.append('/u:' + rdpdict['username']['v'])
+    if 'password' in rdpdict.keys() and rdpdict['password']['t'] == 's':
+        cmd.append('/p:' + rdpdict['password']['v'])
+    if 'domain' in rdpdict.keys() and rdpdict['domain']['t'] == 's':
+        cmd.append('/d:' + rdpdict['domain']['v'])
+    if 'redirectclipboard' in rdpdict.keys() and rdpdict['redirectclipboard']['t'] == 'i' and rdpdict['redirectclipboard']['v'] == '1':
+        cmd.append('/clipboard')
+    # sound
+    if 'audiomode' in rdpdict.keys() and rdpdict['audiomode']['t'] == 'i' and rdpdict['audiomode']['v'] == '0':
+        cmd.append('/sound:sys:alsa')
+        cmd.append('/microphone:sys:alsa')
+        cmd.append('/audio-mode:0')
+    cmd.append('/rfx')
+    if 'redirectprinters' in rdpdict.keys() and rdpdict['redirectprinters']['t'] == 'i' and rdpdict['redirectprinters']['v'] == '1':
+        cmd.append('/printer')
+    if 'remoteapplicationprogram' in rdpdict.keys() and rdpdict['remoteapplicationprogram']['t'] == 's':
+        cmd.append('/app' + rdpdict['remoteapplicationprogram']['v'])
+    if 'remoteapplicationname' in rdpdict.keys() and rdpdict['remoteapplicationname']['t'] == 's':
+        cmd.append('/app-name:' + rdpdict['remoteapplicationname']['v'])
+    if 'full address' in rdpdict.keys() and rdpdict['full address']['t'] == 's':
+        cmd.append('/v:' + rdpdict['full address']['v'])
+    return cmd
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        sys.exit(0)
+    rdpdict = parseRdp(sys.argv[1])
+    print rdpdict
+    command = buildCmd(rdpdict)
+    print command
+    Popen(command)

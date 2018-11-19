@@ -1,0 +1,54 @@
+# Ubuntu-16.04-desktop-amd64.iso
+
+# Prepare ISO Product Environment
+    # Set root password
+    # Set /root/.profile
+    #    mesg n --> tty -s && mesg n
+    # Autologin
+    #    set /etc/lightdm/lightdm.conf
+    #        autologin-user=root
+    #        autologin-session=lightdm-autologin
+
+    # apt-get install ssh git squashfs-tools compizconfig-settings-manager
+    # apt install python-flask libgksu2-0 python-m2crypto fonts-wqy-microhei apache2 wakeonlan libapache2-mod-wsgi python-pip python-psutil python-xmltodict python-ldap x11vnc xbindkeys xtightvncviewer
+    # /etc/sudoers --> www-data    ALL=(ALL:ALL)    NOPASSWD:ALL
+    # git clone git://192.168.0.110/virtclass/vClassTerminal.git
+    # ./resource/deplist/Babel --> ./install-pypi.sh
+    # ./tuning.sh
+
+    # CCSM
+    #    ccsm -> Ubuntu Unity Plugin -> Disable
+    #    ccsm -> Window Management -> Grid -> Disable (ctrl + alt + numpad)
+    ## Firefox new profile
+    ##    firefox -ProfileManager --new-instance # create 'new' profile
+    ##    do the following firefox configuration steps at the 'new' profile
+    # Firefox Add-ons
+    #    https://addons.mozilla.org/en-us/firefox/addon/status-4-evar/
+    #    https://addons.mozilla.org/en-US/firefox/addon/1659
+    #    https://addons.mozilla.org/en-us/firefox/addon/disable-f12-shortcut/
+    #    https://addons.mozilla.org/en-us/firefox/addon/skip-cert-error/
+    #        add domain whitelist --> 0..9 a..z
+    #    https://addons.mozilla.org/en-US/firefox/addon/new-tab-homepage/
+    #        unavailable: browser.newtab.url --> 127.0.0.1
+    # Firefox Preferences
+    #    Set Content fonts -> WenQuanYi Micro Hei
+    #    Disable popup by plugin status-4-evar
+    #    browser.sessionstore.resume_from_crash --> false
+    #    accessibility.browsewithcaret_shortcut.enabled --> false (F7)
+    #    browser.tabs.closeWindowWithLastTab --> false
+    #    toolkit.startup.max_resumed_crashes --> -1
+    # System Settings
+    #    Startup Applications: add firefox
+    #    Brightness & Lock -> none
+    #    Keyboard -> Shortcuts -> Disabled
+    #    Software & Updates -> Updates -> Disabled
+    # Disable usb automount  button-power # view by dconf-editor
+    #    gsettings set org.gnome.desktop.media-handling automount true
+    #    gsettings set org.gnome.desktop.media-handling automount-open false
+    #    gsettings set org.gnome.settings-daemon.plugins.power button-power 'nothing'
+    ## VLC
+    ##    play rtmp for access network request and record in ~/.config
+
+    # mobile phone charge on the computer
+    # connect citrix web server manually
+

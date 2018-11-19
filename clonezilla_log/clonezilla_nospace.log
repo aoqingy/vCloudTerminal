@@ -1,0 +1,52 @@
+Starting /usr/sbin/ocs-sr at 2017-12-12 21:27:38 CST...
+*****************************************************.
+Clonezilla image dir: /home/partimag
+The selected devices: sdb
+The selected devices: sdb
+Searching for data partition(s)...
+Searching for swap partition(s)...
+The data partition to be saved:   sdb1
+The swap partition to be saved:  
+The selected devices: sdb1
+Saving block devices info in /home/partimag/image/blkdev.list...
+Saving block devices attributes in /home/partimag/image/blkid.list...
+Checking the integrity of partition table in the disk /dev/sdb... 
+Reading the partition table for /dev/sdb...RETVAL=0
+*****************************************************.
+The first partition of disk /dev/sdb starts at 2048.
+Saving the hidden data between MBR (1st sector, i.e. 512 bytes) and 1st partition, which might be useful for some recovery tool, by:
+dd if=/dev/sdb of=/home/partimag/image/sdb-hidden-data-after-mbr skip=1 bs=512 count=2047
+2047+0 records in
+2047+0 records out
+1048064 bytes (1.0 MB, 1.0 MiB) copied, 0.0304808 s, 34.4 MB/s
+*****************************************************.
+Saving the MBR data for sdb...
+1+0 records in
+1+0 records out
+512 bytes copied, 0.000296867 s, 1.7 MB/s
+Starting saving /dev/sdb1 as /home/partimag/image/sdb1.XXX...
+/dev/sdb1 filesystem: ntfs.
+*****************************************************.
+*****************************************************.
+Use partclone with pigz to save the image.
+Image file will be split with size limit 4000 MB.
+*****************************************************.
+If this action fails or hangs, check:
+* Is the disk full ?
+*****************************************************.
+Run partclone: partclone.ntfs -z 10485760 -L /var/log/partclone.log -c -s /dev/sdb1 --output - | pigz -c --fast -b 1024 -p 16 -R | split -b 4000m - /home/partimag/image/sdb1.ntfs-ptcl-img.gz. 2> /tmp/split_error.uupV8L
+Partclone v0.2.86 http://partclone.org
+Starting to clone device (/dev/sdb1) to image (-)
+Reading Super Block
+we need memory: 618820 bytes
+image head 4160, bitmap 610560, crc 4100 bytes
+Calculating bitmap... Please wait... done!
+File system:  NTFS
+Device size:   20.0 GB = 4884479 Blocks
+Space in use:  10.3 GB = 2509272 Blocks
+Free Space:     9.7 GB = 2375207 Blocks
+Block size:   4096 Byte
+Total block 4884479
+image write ERROR:Broken pipe
+/home/partimag is full! No space left on device!
+Program terminated!!

@@ -1,0 +1,6 @@
+https://www.kraxel.org/blog/tag/qemu/
+https://mpolednik.github.io/2017/05/21/vfio-mdev/
+https://heiko-sieger.info/running-windows-10-on-linux-using-kvm-with-vga-passthrough/
+https://www.redhat.com/archives/vfio-users/2016-July/msg00047.html
+https://01.org/zh/kvm/blogs/albcamus/2014/kvmgt-first-release?langredirect=1
+https://github.com/intel/gvt-linux/wiki/GVTg_Setup_Guide

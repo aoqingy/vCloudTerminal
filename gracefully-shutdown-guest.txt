@@ -1,0 +1,31 @@
+root@demo-System:~# nc -U /usr/sbin/virtfan/monitor.sock
+{"QMP": {"version": {"qemu": {"micro": 0, "minor": 5, "major": 2}, "package": " (Debian 1:2.5+dfsg-5ubuntu10.16)"}, "capabilities": []}}
+
+{ "execute": "qmp_capabilities" }
+{"return": {}}
+{ "execute": "query-status" }
+{"return": {"status": "running", "singlestep": false, "running": true}}
+{ "execute": "system_powerdown" }
+{"return": {}}
+{"timestamp": {"seconds": 1517650998, "microseconds": 495424}, "event": "POWERDOWN"}
+{"timestamp": {"seconds": 1517650998, "microseconds": 657166}, "event": "VSERPORT_CHANGE", "data": {"open": false, "id": "channel0"}}
+{"timestamp": {"seconds": 1517651001, "microseconds": 811709}, "event": "VSERPORT_CHANGE", "data": {"open": true, "id": "channel0"}}
+{"timestamp": {"seconds": 1517651001, "microseconds": 869204}, "event": "VSERPORT_CHANGE", "data": {"open": false, "id": "channel0"}}
+{"timestamp": {"seconds": 1517651007, "microseconds": 353930}, "event": "SHUTDOWN"}
+{"timestamp": {"seconds": 1517651007, "microseconds": 353977}, "event": "DEVICE_TRAY_MOVED", "data": {"device": "drive-ide0-1-0", "tray-open": true}}
+{"timestamp": {"seconds": 1517651007, "microseconds": 354012}, "event": "DEVICE_TRAY_MOVED", "data": {"device": "drive-fdc0-0-0", "tray-open": true}}
+{"timestamp": {"seconds": 1517651007, "microseconds": 354713}, "event": "SPICE_DISCONNECTED", "data": {"server": {"port": "5999", "family": "ipv4", "host": "127.0.0.1"}, "client": {"port": "56212", "family": "ipv4", "host": "127.0.0.1"}}}
+{"timestamp": {"seconds": 1517651007, "microseconds": 354782}, "event": "SPICE_DISCONNECTED", "data": {"server": {"port": "5999", "family": "ipv4", "host": "127.0.0.1"}, "client": {"port": "56214", "family": "ipv4", "host": "127.0.0.1"}}}
+
+
+
+
+echo '{ "execute": "qmp_capabilities" }' | socat - UNIX-CONNECT:/usr/sbin/virtfan/monitor.sock
+echo '{ "execute": "qmp_capabilities"}{ "execute": "system_powerdown" }' | socat - UNIX-CONNECT:/usr/sbin/virtfan/monitor.sock
+
+https://www.bbsmax.com/A/B0zqrr3JvL/
+https://www.nico.schottelius.org/blog/control-and-shutdown-qemu-kvm-vm-via-unix-socket/
+
+root@demo-System:/usr/sbin/virtfan# ps -ef | grep qemu-system | sed -nr 's/.* -name ([^ ]+).*/\/usr\/sbin\/virtfan\/\1\.sh/p' | xargs ls -l
+-rw-r--r-- 1 root root 2770 2月   3 17:31 /usr/sbin/virtfan/abc.sh
+-rw-r--r-- 1 root root 2302 2月   3 20:31 /usr/sbin/virtfan/bbb.sh

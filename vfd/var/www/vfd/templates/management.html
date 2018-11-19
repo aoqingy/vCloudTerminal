@@ -1,0 +1,460 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>云终端管理界面</title>
+  <link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="static/css/simple-line-icons.min.css">
+  <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="static/css/components-rounded.css">
+  <link rel="stylesheet" type="text/css" href="static/css/style.css">
+  <!-- Begin JqGrid Style -->
+  <link rel="stylesheet" type="text/css" href="static/jqgrid/css/ui-lightness/jquery-ui-1.8.16.custom.css">
+  <link rel="stylesheet" type="text/css" href="static/jqgrid/css/ui.jqgrid.css">
+  <!-- End JqGrid Style --> 
+  <!--Begin time and date-->
+  <link rel="stylesheet" type="text/css" href="static/css/datepicker3.css"/>
+  <link rel="stylesheet" type="text/css" href="static/css/bootstrap-timepicker.min.css">
+  <!--End time and date--> 
+  <link rel="shortcut icon" href="static/img/favicon.ico"/>
+</head>
+<body>
+  <div class="all" id="management-content">
+    <div class="header">
+      <table width="100%" border="0">
+        <tr>
+          <td class="header_left" width="50"><a href="/" style="color:#fff; font-family:'WenQuanYi Micro Hei', serif; font-size:16px; text-decoration:none;">云终端</a></td>
+          <td class="header_left" style="color:#ccc;font-size:12px;">[Alt+Home]</td>
+          <td class="header_right">
+            <a href="/" style="color:#fff; font-size:16px; text-decoration:none; padding:3px" title="主页"><i class="fa fa-home"></i></a>
+            <a href="/setting" style="color:#fff; font-size:16px; text-decoration:none; padding:3px" title="设置"><i class="fa fa-cog"></i></a>
+            <a data-toggle="modal" style="color:#fff; font-size:16px; text-decoration:none; padding:3px" title="重启" href="#reboot"><i class="fa fa-undo"></i></a>
+            <a data-toggle="modal" style="color:#fff; font-size:16px; text-decoration:none; padding:3px" title="关机" href="#shutdown"><i class="fa fa-power-off"></i></a>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="content">
+      <div class="portlet light">
+        <div class="portlet-body">
+          <div class="tabbable-line" style="font-family: 'WenQuanYi Micro Hei', serif;">
+            <ul class="nav nav-tabs">
+              <li class="active"> <a data-toggle="tab" aria-expanded="true" href="#overview_1" id="pm-tab-terminal"> 终端管理 </a> </li>
+              <li class=""> <a data-toggle="tab" aria-expanded="false" href="#overview_2" id="pm-tab-certification"> 证书管理 </a> </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="overview_1">
+                <div class="col-md-12">
+                  <div class="col-md-7">
+                    <div class="input-group" style="text-align:left">
+                      <input class="form-control" type="text" maxlength="15" size="15" id="pm-ip-start" placeholder="起始地址">
+                      <span class="input-group-addon"> 至 </span>
+                      <input class="form-control" type="text" maxlength="15" size="15" id="pm-ip-end" placeholder="结束地址（可选）">
+                      <span class="input-group-btn">
+                        <a href="javascript:;" class="btn blue" id="pm-ip-search"><i class="fa fa-search"></i>搜索</a>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-md-1" id='pm-ip-checker'>
+                  </div>
+                  <div class="col-md-4">
+                    <button type="button" class="btn blue" id="pm-refresh"  >刷新列表</button>
+                    <button type="button" class="btn blue" id="pm-clear"    >清空列表</button>
+                  </div>
+                </div>
+                <div class="col-md-12" style="padding-top:10px; text-align:left">
+                  <button type="button" class="btn blue" id="pm-wakeup"     >  开机  </button>
+                  <button type="button" class="btn blue" id="pm-shutdown"   >  关机  </button>
+                  <button type="button" class="btn blue" id="pm-reboot"     >  重启  </button>
+                  <button type="button" class="btn blue" id="pm-enable"     >  启用  </button>
+                  <button type="button" class="btn blue" id="pm-disable"    >  禁用  </button>
+                  <button type="button" class="btn blue" id="pm-update"     >  更新  </button>
+                  <button type="button" class="btn blue" id="pm-info"       >  信息  </button>
+                  <button type="button" class="btn blue" id="pm-set-time"   >  时间  </button>
+                  <button type="button" class="btn blue" id="pm-connection" > 连接项 </button>
+                  <button type="button" class="btn blue" id="pm-export-macs">导出地址</button>
+                  <button type="button" class="btn blue" id="pm-remove"     >  删除  </button>
+                </div>
+                <div class="col-md-12" style="padding-top:10px; text-align:center">
+                  <div class="dataTables_wrapper" style="margin-left:10px;">
+                    <table id="grid-pm-terminal"></table>
+                    <div id="pager-pm-terminal"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="overview_2">
+                <div class="col-md-12" style="padding-top:20px">
+                  <div class="form-group">
+                    <label class="col-md-2 control-label">管理证书:</label>
+                    <div class="col-md-10 form-control">
+                      <button type="button" class="btn blue" id="mgmt-lic-upload">上传</button>
+                      <button type="button" class="btn red" id="mgmt-lic-remove">删除</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 关机确认对话框 -->
+    <div class="modal fade" id="shutdown" tabindex="-1" role="basic" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" align="left">关机</h4>
+          </div>
+          <div class="modal-body" align="left"> 确定要关机吗？ </div>
+          <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn blue" id="pi-shutdown">关机</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 重启确认对话框 -->
+    <div class="modal fade" id="reboot" tabindex="-1" role="basic" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" align="left">重启终端</h4>
+          </div>
+          <div class="modal-body" align="left"> 确定要重启终端吗？ </div>
+          <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn blue" id="pi-reboot">重启</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="dialog-upload-mgmt-lic" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog">
+        <form action="" id="form-upload-mgmt-lic" class="form-horizontal form-row-seperated">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+              <h4 class="modal-title">上传管理许可证</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="col-md-3 control-label">选择管理许可证：</label>
+                    <input type="file" name="filename" id="mgmt-upload-file-name"></input>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" data-dismiss="modal" class="btn">取消</button>
+              <button type="submit" class="btn green">确定</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="dialog-update-terminal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog">
+        <form action="" id="form-update-terminal" class="form-horizontal form-row-seperated">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+              <h4 class="modal-title">更新终端</h4>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" name="macs" id="pm-update-macs" />
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="col-md-3 control-label">选择更新项目：</label>
+                    <select type="text" name="filetype" id="pm-file-type">
+                      <option value="package">软件升级包</option>
+                      <option value="license">使用许可证</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-3 control-label">选择更新文件：</label>
+                    <input type="file" name="filename" id="pm-update-file-name"></input>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" data-dismiss="modal" class="btn">取消</button>
+              <button type="submit" class="btn green">确定</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="dialog-set-time" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog">
+        <form action="" id="form-set-time" class="form-horizontal form-row-seperated">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+              <h4 class="modal-title">设置时间</h4>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" name="macs" id="dst-macs" />
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="control-label col-md-3">日期</label>
+                    <div class="col-md-3">
+                      <div id="dst-datepicker" class="date-picker" data-date-format="mm/dd/yyyy"> </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3">时间</label>
+                    <div class="col-md-3">
+                      <div class="input-icon"> <i class="fa fa-clock-o"></i>
+                        <input id="dst-timepicker" type="text" class="form-control timepicker timepicker-default" data-show-meridian="false" data-max-hours="24" data-show-seconds="false" data-show-inputs="false" data-template="false">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" data-dismiss="modal" class="btn">取消</button>
+              <button type="button" class="btn green" id="dst-set-time">确定</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="dialog-add-connection" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog">
+        <form action="" id="form-add-connection" class="form-horizontal form-row-seperated">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+              <h4 class="modal-title">添加连接项</h4>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" name="macs" id="dac-macs" />
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="control-label col-md-3">资源类型</label>
+                    <div class="col-md-8">
+                      <select type="text" class="form-control" name="ctype" id="dac-connection-type">
+                        <option value="spice-desktop">SPICE桌面</option>
+                        <option value="rdp-desktop">RDP桌面</option>
+                        <option value="citrix-desktop">浏览器</option>
+<!--
+                        <option value="cloud-class">云课堂</option>
+-->
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3">连接名称</label>
+                    <div class="col-md-8">
+                      <input class="form-control" type="text" name="cname" id='dac-connection-name' placeholder="连接显示名称，必填" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3">连接地址</label>
+                    <div class="col-md-8">
+                      <input class="form-control" type="text" name="caddress" id='dac-url-address' placeholder="URL地址（含或不含http或https，必填）" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3">用户名规则</label>
+                    <div class="col-md-4">
+                      <input class="form-control" type="text" name="uprefix" id='dac-username-prefix' placeholder="用户名前缀" />
+                    </div>
+                    <div class="col-md-4">
+                      <input class="form-control" type="text" name="snumber" id='dac-start-sequence' placeholder="起始编号" />
+                      <div id='dac-start-sequence-checker'></div>
+                    </div>
+                    <!--前缀、起始编号、按MAC地址顺序、按IP地址顺序、随机-->
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3">密码</label>
+                    <!--与用户名相同、输入统一密码-->
+                    <div class="col-md-4">
+                      <input class="form-control" type="text" name="password" id='dac-password' />
+                      <div id='dac-password-checker'></div>
+                    </div>
+                    <div class="col-md-4">
+                      <input type="checkbox" name="pasuser" id='dac-password-as-user' />
+                      <label class="control-label" style="text-align:left">与用户名相同</label>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3">域名</label>
+                    <div class="col-md-8">
+                      <input class="form-control" type="text" name="domain" id='dac-domain' placeholder="可选" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3"></label>
+                    <div class="col-md-8">
+                      <input type="checkbox" name="cauto" id='dac-auto-connect' />
+                      <label class="control-label" style="text-align:left">自动连接</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="col-md-6" style="text-align:left">
+              <button type="button" class="btn green" id="dac-clear-connection">清除终端所有连接项</button>
+              </div>
+              <div class="col-md-6" style="text-align:right">
+                <button type="button" id="dac-cancel-add-connection" data-dismiss="modal" class="btn">取消</button>
+                <button type="submit" class="btn green">添加</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 终端信息对话框 -->
+    <div id="dialog-info" class="modal fade" tabindex="-1" role="basic" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title" align="left">终端信息</h4>
+          </div>
+          <div class="modal-body">
+            <div class="tabbable">
+              <ul class="nav nav-tabs nav-tabs-lg">
+                <li class="active"><a href="#systeminfo"   data-toggle="tab">系统信息  </a></li>
+                <li>               <a href="#softwareinfo" data-toggle="tab">软件信息  </a></li>
+                <li>               <a href="#licenseinfo"  data-toggle="tab">许可证信息</a></li>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane active" id="systeminfo">
+                  <div class="col-md-12">
+                    <div class="portlet light">
+                      <div id="div-system-info" class="portlet-body" align="left" style="font-size:15px;padding-left:30px;height:250px">
+                        <table style="height: 280px;overflow: auto;">
+                          <tbody>
+                            <tr>  
+                              <td align="right" width="81.6"><b>内核版本</b></td>
+                              <td class="info-tab-style" id="kernel"></td>
+                            </tr>
+                            <tr>
+                              <td align="right" width="81.6"><b>物理地址</b></td>
+                              <td class="info-tab-style" id="mac"></td>
+                            </tr>
+                            <tr>  
+                              <td align="right" width="81.6"><b>处理器</b></td>
+                              <td class="info-tab-style" id="cpu_model"></td>
+                            </tr>
+                            <tr>  
+                              <td align="right" width="81.6"><b>内核数</b></td>
+                              <td class="info-tab-style" id="cpu_core"></td>
+                            </tr>
+                            <tr>  
+                              <td align="right" width="81.6"><b>内存大小</b></td>
+                              <td class="info-tab-style" id="mem_total"></td>
+                            </tr>
+                            <tr>  
+                              <td align="right" width="81.6"><b>可用内存</b></td>
+                              <td class="info-tab-style" id="mem_free"></td>
+                            </tr>
+                            <tr>  
+                              <td align="right" width="81.6"><b>空间大小</b></td>
+                              <td class="info-tab-style" id="disk"></td>
+                            </tr>
+                            <tr>  
+                              <td align="right" width="81.6"><b>运行时间</b></td>
+                              <td class="info-tab-style" id="uptime"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane" id="softwareinfo">
+                  <div class="col-md-12">
+                    <div class="portlet light">
+                      <div id="div-software-info" class="portlet-body" align="left" style="font-size:15px;padding-left:50px;height:250px" >
+                        <table style="height: 70px;overflow: auto;">
+                          <tbody>
+                            <tr>  
+                              <td align="right" width="81.6"><b>软件</b></td>
+                              <td class="info-tab-style">云桌面终端软件</td>
+                            </tr>
+                            <tr>
+                              <td align="right" width="81.6"><b>版本</b></td>
+                              <td class="info-tab-style" id="vfd_ver"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane" id="licenseinfo">
+                  <div class="col-md-12">
+                    <div class="portlet light">
+                      <div id="div-license-info" class="portlet-body" align="left" style="font-size:15px;padding-left:50px;height:250px" >
+                        <table style="height: 70px;overflow: auto;">
+                          <tbody>
+                            <tr>  
+                              <td align="right" width="81.6"><b>许可证</b></td>
+                              <td class="info-tab-style" id="lic_status"></td>
+                            </tr>
+                            <tr>
+                              <td align="right" width="81.6"><b>剩余天数</b></td>
+                              <td class="info-tab-style" id="lic_days"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="static/js/jquery.min.js"                ></script>
+  <script type="text/javascript" src="static/js/jquery.form.js"               ></script>
+  <script type="text/javascript" src="static/js/jquery.validate.min.js"       ></script>
+  <script type="text/javascript" src="static/js/bootstrap.min.js"             ></script>
+  <script type="text/javascript" src="static/js/jquery.blockui.min.js"        ></script>
+  <script type="text/javascript" src="static/js/metronic.js"                  ></script>
+  <script type="text/javascript" src="static/js/common.js"                    ></script>
+  <script type="text/javascript" src="static/js/vtcajax.js"                   ></script>
+  <!--Begin JQGRID-->
+  <script type="text/javascript" src="static/jqgrid/js/i18n/grid.locale-cn.js"></script> 
+  <script type="text/javascript" src="static/jqgrid/js/jquery.jqGrid.min.js"  ></script>
+  <!--End JQGRID-->
+  <!-- Begin date and time -->
+  <script type="text/javascript" src="static/js/bootstrap-datepicker.js"      ></script>
+  <script type="text/javascript" src="static/js/bootstrap-timepicker.min.js"  ></script>
+  <script type="text/javascript" src="static/js/components-pickers.js"        ></script>
+  <!-- End date and time -->
+  <script type="text/javascript" src="static/js/management.js"                ></script>	
+  <script type="text/javascript">
+    var bodyHeight = Math.max( window.innerHeight, document.body.clientHeight );
+    document.getElementById("management-content").style.marginTop = ((bodyHeight - 540)/2)+"px";
+    $(function() {
+      ComponentsPickers.init();
+      ManagementObj.init();
+    });
+  </script>
+  <iframe name="pm-form-action" id="pm-form-action" style="display:none"></iframe>
+</body>
+</html>

@@ -1,0 +1,1629 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>云终端</title>
+
+<link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css" /> <!-- Required (aoqingy) -->
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css"    /> <!-- Required (aoqingy) -->
+<link rel="stylesheet" type="text/css" href="/static/css/datepicker3.css"      />
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-timepicker.min.css"/>
+<link rel="stylesheet" type="text/css" href="/static/css/components-rounded.css"      /> <!-- Required (aoqingy) -->
+<link rel="stylesheet" type="text/css" href="/static/css/simple-line-icons.min.css"   /> <!-- Required (aoqingy) -->
+<link rel="stylesheet" type="text/css" href="/static/css/style.css"                   /> <!-- Required (aoqingy) -->
+<!--
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-table.css"/>
+<link rel="stylesheet" type="text/css" href="/static/css/layout.css"         />
+<link rel="stylesheet" type="text/css" href="/static/css/default.css"        />
+-->
+<link rel="shortcut icon" href="static/img/favicon.ico"/>
+</head>
+
+<body>
+<div class="all page-content" id="management-content">
+  <div class="row">
+    <div class="portlet box blue-madison">
+      <div class="portlet-title">
+        <div class="caption">云终端[Alt+Home]
+        </div>
+        <div class="tools">
+          <a style="color:#fff; font-size:16px; text-decoration:none; padding:3px" title="主页" href="/"><i class="fa fa-home"></i></a>
+          <a style="color:#fff; font-size:16px; text-decoration:none; padding:3px" title="重启" data-toggle="modal" href="#reboot"><i class="fa fa-undo"></i></a>
+          <a style="color:#fff; font-size:16px; text-decoration:none; padding:3px" title="关机" data-toggle="modal" href="#shutdown"><i class="fa fa-power-off"></i></a>
+        </div>
+      </div>
+      <div class="portlet-body">
+        <div class="tabbable-line">
+          <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" aria-expanded="true"  href="#overview_1" id="ps-tab-network"> 网络 </a></li>
+            <li class=""      ><a data-toggle="tab" aria-expanded="false" href="#overview_x" id="ps-tab-resource">连接项</a></li>
+            <li class=""      ><a data-toggle="tab" aria-expanded="false" href="#overview_a" id="ps-tab-desktop"> 桌面 </a></li>
+            <li class=""      ><a data-toggle="tab" aria-expanded="false" href="#overview_2" id="ps-tab-time"   > 时间 </a></li>
+            <li class=""      ><a data-toggle="tab" aria-expanded="false" href="#overview_3" id="ps-tab-action" > 操作 </a></li>
+            <li class=""      ><a data-toggle="tab" aria-expanded="false" href="#overview_4" id="ps-tab-about"  > 关于 </a></li>
+          </ul>
+          <div class="tab-content" style="height:460px">
+            <!-- 网络 -->
+            <div class="tab-pane active" id="overview_1">
+              <div class="tabbable">
+                <ul class="nav nav-tabs nav-tabs-lg">
+                  <li class="active"><a data-toggle="tab" href="#netconfig" >有线设置</a></li>
+                  <li               ><a data-toggle="tab" href="#wificonfig">无线设置</a></li>
+                  <li               ><a data-toggle="tab" href="#netdetect" >  检测  </a></li>
+                </ul>
+                <div class="tab-content" align="center">
+                  <div class="tab-pane active" id="netconfig">
+                    <div class="portlet light">
+                      <div class="portlet-body">
+                        <form id="form-network-config" class="form-horizontal">
+                          <div class="form-body">
+                            <div class="form-group">
+                              <label class="col-md-3 control-label">类型</label>
+                              <div class="col-md-8">
+                                <select class="form-control" name="iptype" id="ps-ip-type">
+                                  <option value="dhcp">dhcp</option>
+                                  <option value="static">static</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label">IP地址</label>
+                              <div class="col-md-8">
+                                <input type="text" class="form-control" name="ipaddr" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label">子网掩码</label>
+                              <div class="col-md-8">
+                                <input type="text" class="form-control" name="netmask" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label">网关</label>
+                              <div class="col-md-8">
+                                <input type="text" class="form-control" name="gateway" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label">域名服务器1</label>
+                              <div class="col-md-8">
+                                <input type="text" class="form-control" name="dns1" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label">域名服务器2</label>
+                              <div class="col-md-8">
+                                <input type="text" class="form-control" name="dns2" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="col-md-11" align="right">
+                                <button type="submit" class="btn blue-madison" id="ps-save-network">保存</button>
+                                <button type="button" class="btn blue-madison" id="ps-restart-network">应用</button>
+                              </div>
+                            </div>
+                          </div>
+<!--
+                          <div class="col-md-11" align="right">
+                            <button type="submit" class="btn blue-madison" id="ps-save-network">保存</button>
+                            <button type="button" class="btn blue-madison" id="ps-restart-network">应用</button>
+                          </div>
+-->
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="wificonfig">
+                    <div class="portlet light">
+                      <div class="portlet-body">
+                        <form id="form-wiki-config" class="form-horizontal">
+                          <div class="form-body">
+                            <div class="form-group">
+                              <label class="col-md-3 control-label">已连接</label>
+                              <div class="col-md-8" id="ps-connected-wifi">
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label">名字</label>
+                              <div class="col-md-6">
+                                <select class="form-control" id="ps-wifi-name">
+                                </select>
+                              </div>
+                              <div class="col-md-2" align="right">
+                                <button type="button" class="btn blue-madison" id="ps-refresh-wifi">刷新</button>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label">密码</label>
+                              <div class="col-md-8">
+                                <input type="password" class="form-control" id="ps-wifi-password">
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="col-md-11" align="right">
+                                <button type="submit" class="btn blue-madison" id="ps-connect-wifi">连接</button>
+                              </div>
+                            </div>
+                          </div>
+<!--
+                          <div class="col-md-11" align="right">
+                            <button type="submit" class="btn blue-madison" id="ps-connect-wifi">连接</button>
+                          </div>
+-->
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="netdetect">
+                    <div class="portlet light">
+                      <div class="portlet-body">
+                        <form class="form-horizontal" role="form">
+                          <div class="form-body">
+                            <div class="form-group">
+                              <label class="col-md-2 control-label">IP地址</label>
+                              <div class="col-md-6">
+                                <input type="text" class="form-control" id="ps-ip" />
+                              </div>
+                              <div class="col-md-3" aligh="right">
+                                <button type="button" class="btn blue-madison" id="ps-ping">Ping</button>
+                                <button type="button" class="btn blue-madison" id="ps-stop-ping">停止</button>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-2 control-label"></label>
+                              <div class="col-md-9 form-control" id="ps-ping-info" style="width:550px !important; height:280px; overflow:auto; text-align:left;">
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 连接项 -->
+            <div class="tab-pane" id="overview_x">
+              <div class="row">
+                <input type="hidden" id="pi-nickname">
+                <input type="hidden" id="pi-product" >
+                <input type="hidden" id="pi-serverip">
+                <input type="hidden" id="pi-username">
+                <input type="hidden" id="pi-password">
+                <input type="hidden" id="pi-domain"  >
+                <div class="col-md-12 margin-top-20">
+                  <div class="btn btn-default course-button" id="pi-add-sdesktop">
+                    <img width="16px" src="static/img/desk2-spice.png" />
+                    <div class="course-button-title">SPICE桌面</div>
+                  </div>
+                  <div class="btn btn-default course-button" id="pi-add-rdesktop">
+                    <img width="16px" src="static/img/desk2-rdp2.png" />
+                    <div class="course-button-title">RDP桌面</div>
+                  </div>
+                  <div class="btn btn-default course-button" id="pi-add-vdesktop">
+                    <img width="16px" src="static/img/desk2.png" />
+                    <div class="course-button-title">VMware桌面</div>
+                  </div>
+                  <div class="btn btn-default course-button" id="pi-add-cdesktop">
+                    <img width="16px" src="static/img/app2.png" />
+                    <div class="course-button-title">CITRIX桌面</div>
+                  </div>
+                  <div class="btn btn-default course-button" id="pi-add-idesktop">
+                    <img width="16px" src="static/img/desk2-spice.png" />
+                    <div class="course-button-title">IDV桌面</div>
+                  </div>
+                </div>
+                <div class="col-md-12 margin-top-20">
+                  <div class="table-scrollable" align="center" id="pi-connection-area" style="height:320px; overflow:auto;">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 桌面 -->
+            <div class="tab-pane" id="overview_a">
+              <div class="col-md-12 margin-top-20">
+                <form class="form-horizontal" role="form">
+                  <div class="form-body">
+                    <input type="hidden" id="ps-cur-idv" />
+                    <div class="form-group">
+                      <label class="col-md-3 control-label">名称：</label>
+                      <div class="col-md-6">
+                        <select type="text" class="form-control" name="nickname" id="ps-idv-name">
+                        </select>
+                      </div>
+                      <div class="col-md-2" id="ps-idv-action">
+                        <a class="btn btn-default btn-sm" id="ps-create-idv">
+                          <span class="hidden-480">创建</span>
+                        </a>
+                      </div>
+                    </div>
+                    <div id="ps-idv-info">
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- 时间 -->
+            <div class="tab-pane" id="overview_2">
+              <div class="portlet light">
+                <div class="portlet-body">
+                  <div class="form-body">
+                    <div class="form-group">
+                      <label class="control-label col-md-3" text-align="right">日期</label>
+                      <div class="col-md-8">
+                        <div id="ps-datepicker" class="date-picker" data-date-format="mm/dd/yyyy"> </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label col-md-3" text-align="right">时间</label>
+                      <div class="col-md-8">
+                        <div class="input-icon"><i class="fa fa-clock-o"></i>
+                          <input id="ps-timepicker" type="text" class="form-control timepicker timepicker-default" data-show-meridian="false" data-max-hours="24" data-show-seconds="false" data-show-inputs="false" data-template="false">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-11 margin-top-20" align="right">
+                        <button type="submit" class="btn blue-madison" id="ps-set-time">保存</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 操作 -->
+            <div class="tab-pane" id="overview_3">
+              <div style="height:440px; overflow:auto">
+                  <div class="col-md-7 margin-top-10" align="right"> 设置云终端密码，如果密码为空则无密码 </div>
+                  <div class="col-md-4 margin-top-10"> <a class="btn blue-madison" data-toggle="modal" style="width:100px;" id="ps-password"      >密码设置</a> </div>
+                  <div class="col-md-7 margin-top-10" align="right"> 切换到其他系统，重启终端后生效 </div>
+                  <div class="col-md-4 margin-top-10"> <a class="btn blue-madison" data-toggle="modal" style="width:100px;" id="ps-bootloader"    >系统切换</a> </div>
+                  <div class="col-md-7 margin-top-10" align="right"> 保存本地磁盘或分区中的数据到指定目录 </div>
+                  <div class="col-md-4 margin-top-10"> <a class="btn blue-madison" data-toggle="modal" style="width:100px;" id="ps-save"          >系统保存</a> </div>
+                  <div class="col-md-7 margin-top-10" align="right"> 从指定目录恢复本地磁盘或分区中的数据 </div>
+                  <div class="col-md-4 margin-top-10"> <a class="btn blue-madison" data-toggle="modal" style="width:100px;" id="ps-restore"       >系统恢复</a> </div>
+                  <div class="col-md-7 margin-top-10" align="right"> 将本地保存的系统镜像上传到远程目录 </div>
+                  <div class="col-md-4 margin-top-10"> <a class="btn blue-madison" data-toggle="modal" style="width:100px;" id="ps-upload"        >系统上传</a> </div>
+                  <div class="col-md-7 margin-top-10" align="right"> 从远程目录中下载系统镜像保存到本地 </div>
+                  <div class="col-md-4 margin-top-10"> <a class="btn blue-madison" data-toggle="modal" style="width:100px;" id="ps-download"      >系统下载</a> </div>
+                  <div class="col-md-7 margin-top-10" align="right"> 共享连接到本机的USB设备 </div>
+                  <div class="col-md-4 margin-top-10"> <a class="btn blue-madison" data-toggle="modal" style="width:100px;" id="ps-usbredir"      >USB设备共享</a> </div>
+                  <div class="col-md-7 margin-top-10" align="right"> 在U盘与终端之间进行数据复制 </div>
+                  <div class="col-md-4 margin-top-10"> <a class="btn blue-madison" data-toggle="modal" style="width:100px;" id="ps-file"          >USB数据交换</a> </div>
+                  <div class="col-md-7 margin-top-10" align="right"> 接入含有升级文件的可移动设备 </div>
+                  <div class="col-md-4 margin-top-10"> <a class="btn blue-madison" data-toggle="modal" style="width:100px;" href="#dialog-upgrade">系统升级</a> </div>
+                  <div class="col-md-7 margin-top-10" align="right"> 接入可移动设备，日志将自动导出其中 </div>
+                  <div class="col-md-4 margin-top-10"> <a class="btn blue-madison" data-toggle="modal" style="width:100px;" href="#dialog-log"    >日志导出</a> </div>
+                  <div class="col-md-7 margin-top-10" align="right"> 接入含有许可证的可移动设备 </div>
+                  <div class="col-md-4 margin-top-10"> <a class="btn blue-madison" data-toggle="modal" style="width:100px;" href="#dialog-license">许可证上传</a> </div>
+              </div>
+            </div>
+            <!-- 关于 -->
+            <div class="tab-pane" id="overview_4">
+              <div class="tabbable">
+                <ul class="nav nav-tabs nav-tabs-lg">
+                  <li class="active"><a data-toggle="tab" href="#systeminfo"  > 系统信息 </a></li>
+                  <li               ><a data-toggle="tab" href="#softwareinfo"> 软件信息 </a></li>
+                  <li               ><a data-toggle="tab" href="#licenseinfo" >许可证信息</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="systeminfo">
+                    <div class="portlet light">
+                      <div class="portlet-body">
+                        <div class="row" id="div-system-info">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="softwareinfo">
+                    <div class="portlet light">
+                      <div class="portlet-body" align="left" id="div-software-info">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="licenseinfo">
+                    <div class="portlet light">
+                      <div class="portlet-body" align="left" id="div-license-info">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 添加SPICE桌面对话框 -->
+  <div id="dialog-add-sdesktop" class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" data-backdrop="static" style="display: none;">
+    <div class="modal-dialog">
+      <form id="form-add-sdesktop" class="form-horizontal form-row-seperated" novalidate="novalidate">
+        <div class="modal-content">
+          <div class="modal-header" align="left">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title">连接我的SPICE桌面</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <input type="hidden" name="id" value="">
+                <input type="hidden" name="product" value="spice-desktop">
+                <div class="form-group">
+                  <label class="col-md-3 control-label">名称：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" name="nickname">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">服务器地址：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" name="serverip">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">用户名：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" name="username">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">密码：</label>
+                  <div class="col-md-8">
+                    <input type="password" class="form-control" name="password">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">域名：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" name="domain">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">自动连接：</label>
+                  <div class="col-md-8" align="left">
+                    <input type="checkbox"  value="1" name="autolink" style=" width: 19px; height: 25px; padding: 0 5px 0 0; display: block; clear: left; float: left;" >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn" id="pi-cancel-add-sdesktop">取消</button>
+            <button type="submit" class="btn blue-madison" id="pi-commit-add-sdesktop">确定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 添加RDP桌面对话框 -->
+  <div id="dialog-add-rdesktop" class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" data-backdrop="static" style="display: none;">
+    <div class="modal-dialog">
+      <form id="form-add-rdesktop" class="form-horizontal form-row-seperated" novalidate="novalidate">
+        <div class="modal-content">
+          <div class="modal-header" align="left">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title">连接我的RDP桌面</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <input type="hidden" name="id" value="">
+                <input type="hidden" name="product" value="rdp-desktop">
+                <input type="hidden" id="pi-cur-rdesktop">
+                <div class="form-group">
+                  <label class="col-md-3 control-label">名称：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" name="nickname">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">服务器地址：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" name="serverip">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">用户名：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" name="username">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">密码：</label>
+                  <div class="col-md-8">
+                    <input type="password" class="form-control" name="password">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">域名：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" name="domain">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">自动连接：</label>
+                  <div class="col-md-8" align="left">
+                    <input type="checkbox"  value="1" name="autolink" style=" width: 19px; height: 25px; padding: 0 5px 0 0; display: block; clear: left; float: left;" >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn" id="pi-cancel-add-rdesktop">取消</button>
+            <button type="submit" class="btn blue-madison" id="pi-commit-add-rdesktop">确定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 添加VMware桌面对话框 -->
+  <div id="dialog-add-vdesktop" class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" data-backdrop="static" style="display: none;">
+    <div class="modal-dialog">
+      <form id="form-add-vdesktop" class="form-horizontal form-row-seperated" novalidate="novalidate">
+        <div class="modal-content">
+          <div class="modal-header" align="left">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title">连接我的VMware桌面</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <input type="hidden" name="id" value="">
+                <input type="hidden" name="product" value="vmware-desktop">
+                <div class="form-group">
+                  <label class="col-md-3 control-label">名称：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" name="nickname">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">服务器地址：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" name="serverip">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">用户名：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" name="username">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">密码：</label>
+                  <div class="col-md-8">
+                    <input type="password" class="form-control" name="password">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">自动连接：</label>
+                  <div class="col-md-8" align="left">
+                    <input type="checkbox"  value="1" name="autolink" style=" width: 19px; height: 25px; padding: 0 5px 0 0; display: block; clear: left; float: left;" >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn" id="pi-cancel-add-vdesktop">取
+消</button>
+            <button type="submit" class="btn blue-madison" id="pi-commit-add-vdesktop">确定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 添加Citrix对话框 -->
+  <div id="dialog-add-cdesktop" class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" data-backdrop="static" style="display: none;">
+    <div class="modal-dialog">
+      <form id="form-add-cdesktop" class="form-horizontal form-row-seperated" novalidate="novalidate">
+        <div class="modal-content">
+          <div class="modal-header" align="left">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title">连接我的CITRIX桌面</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <input type="hidden" name="id" value="">
+                <input type="hidden" name="product" value="citrix-desktop">
+                <div class="form-group">
+                  <label class="col-md-3 control-label">名称：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" name="nickname">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">地址：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" name="serverip">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">自动连接：</label>
+                  <div class="col-md-8" align="left">
+                    <input type="checkbox"  value="1" name="autolink" style=" width: 19px; height: 25px; padding: 0 5px 0 0; display: block; clear: left; float: left;" >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn" id="pi-cancel-add-cdesktop">取消</button>
+            <button type="submit" class="btn blue-madison" id="pi-commit-add-cdesktop">确定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 添加IDV桌面对话框 -->
+  <div id="dialog-add-idesktop" class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" data-backdrop="static" style="display: none;">
+    <div class="modal-dialog">
+      <form id="form-add-idesktop" class="form-horizontal form-row-seperated" novalidate="novalidate">
+        <div class="modal-content">
+          <div class="modal-header" align="left">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title">连接我的IDV桌面</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <input type="hidden" name="id" value="">
+                <input type="hidden" name="product" value="idv-desktop">
+                <input type="hidden" name="serverip" value="localhost">
+                <input type="hidden" name="username">
+                <input type="hidden" id="pi-cur-idesktop">
+                <div class="form-group">
+                  <label class="col-md-3 control-label">名称：</label>
+                  <div class="col-md-8">
+                    <select type="text" class="form-control" name="nickname" id="pi-idvname">
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">自动连接：</label>
+                  <div class="col-md-8" align="left">
+                    <input type="checkbox"  value="1" name="autolink" style=" width: 19px; height: 25px; padding: 0 5px 0 0; display: block; clear: left; float: left;" >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn" id="pi-cancel-add-idesktop">取消</button>
+            <button type="submit" class="btn blue-madison" id="pi-commit-add-idesktop">确定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <div id="dialog-create-idv" class="modal fade bs-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="portlet light" id="wizard-create-idv">
+              <div class="portlet-title">
+                <div class="caption"><span class="caption-subject font-green-sharp bold uppercase">创建IDV桌面</span>
+                </div>
+              </div>
+              <div class="portlet-body form">
+                <form action="javascript:;" class="form-horizontal" id="form-create-idv" method="POST" novalidate>
+                  <input type="hidden" id="ps-dci-vm" />
+                  <div class="form-wizard">
+                    <div class="form-body">
+                      <ul class="nav nav-pills nav-justified">
+                        <li class="active"> <a href="#ps-dci-tab1" data-toggle="tab" class="step" aria-expanded="true"> <img src="/static/img/flow-idv-1.png" title="名称" width="133"/> </a> </li>
+                        <li> <a href="#ps-dci-tab2" data-toggle="tab" class="step"><img src="/static/img/flow-idv-2.png" title="CPU与内存"   width="133"/> </a></li>
+                        <li> <a href="#ps-dci-tab3" data-toggle="tab" class="step"><img src="/static/img/flow-idv-3.png" title="磁盘、光盘和软盘"  width="133"/> </a> </li>
+                        <li> <a href="#ps-dci-tab4" data-toggle="tab" class="step"><img src="/static/img/flow-idv-4.png" title="网络类型及参数"  width="133"/> </a> </li>
+                        <li> <a href="#ps-dci-tab5" data-toggle="tab" class="step"><img src="/static/img/flow-idv-5.png" title="外部设备"  width="133"/> </a> </li>
+                      </ul>
+                      <div class="tab-content">
+                        <div class="tab-pane active" id="ps-dci-tab1">
+                          <div class="form-group">
+                            <label class="col-md-3 control-label">名称：</label>
+                            <div class="col-md-8">
+                              <input type="text" class="form-control" id="ps-dci-name" />
+                              <div id="ps-dci-name-checker"></div>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-md-3 control-label">开机启动：</label>
+                            <div class="col-md-8" align="left">
+                              <input type="checkbox" value="1" style="width: 19px; height: 25px; padding: 0 5px 0 0; display: block; clear: left; float: left;" id="ps-dci-autostart" >
+                            </div>
+                          </div>
+                        </div>
+                        <div class="tab-pane" id="ps-dci-tab2">
+                          <div class="form-group">
+                            <label class="col-md-3 control-label">内存：</label>
+                            <div class="col-md-6">
+                              <input type="text" class="form-control" placeholder="以MB为单位" id="ps-dci-memory" />
+                              <div id="ps-dci-memory-checker"></div>
+                            </div>
+                            <div class="col-md-2">
+                              <input type="text" class="form-control" readonly="readonly" id="ps-dci-rmemory" />
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-md-3 control-label">CPU：</label>
+                            <div class="col-md-6">
+                              <input type="text" class="form-control" placeholder="CPU核心数" id="ps-dci-cpu" />
+                              <div id="ps-dci-cpu-checker"></div>
+                            </div>
+                            <div class="col-md-2">
+                              <input type="text" class="form-control" readonly="readonly" id="ps-dci-rcpu" />
+                            </div>
+                          </div>
+                        </div>
+                        <div class="tab-pane" id="ps-dci-tab3">
+                          <div class="form-group">
+                            <div class="form-group">
+                              <label class="col-md-3 control-label">系统磁盘：</label>
+                              <div class="col-md-7">
+                                <select type="text" class="form-control" id="ps-dci-sdisk">
+                                </select>
+                                <div id="ps-dci-sdisk-checker"></div>
+                              </div>
+                              <div class="col-md-2">
+                                <a class="btn btn-default btn-sm" id="ps-create-sdisk">
+                                  <span class="hidden-480">创建</span>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="form-group">
+                              <label class="col-md-3 control-label">数据磁盘：</label>
+                              <div class="col-md-7">
+                                <select type="text" class="form-control" id="ps-dci-ddisk">
+                                </select>
+                              </div>
+                              <div class="col-md-2">
+                                <a class="btn btn-default btn-sm" id="ps-create-ddisk">
+                                  <span class="hidden-480">创建</span>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="form-group">
+                              <label class="col-md-3 control-label">光盘：</label>
+                              <div class="col-md-7">
+                                <select type="text" class="form-control" id="ps-dci-iso">
+                                </select>
+                              </div>
+                              <div class="col-md-2">
+                                <a class="btn btn-default btn-sm" id="ps-upload-iso">
+                                  <span class="hidden-480">上传</span>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="form-group">
+                              <label class="col-md-3 control-label">软盘：</label>
+                              <div class="col-md-7">
+                                <select type="text" class="form-control" id="ps-dci-vfd">
+                                </select>
+                              </div>
+                              <div class="col-md-2">
+                                <a class="btn btn-default btn-sm" id="ps-upload-vfd">
+                                  <span class="hidden-480">上传</span>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="tab-pane" id="ps-dci-tab4">
+                          <div class="form-group">
+                            <label class="col-md-3 control-label">类型：</label>
+                            <div class="col-md-8">
+                              <select type="text" class="form-control" id="ps-dci-nettype">
+                                <option value=""></option>
+                                <option value="user">User</option>
+                                <option value="bridge">Bridge</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-md-3 control-label">IP地址：</label>
+                            <div class="col-md-8">
+                              <input type="text" class="form-control" id="ps-dci-ipaddr" />
+                              <div id="ps-dci-ipaddr-checker"></div>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-md-3 control-label">子网掩码：</label>
+                            <div class="col-md-8">
+                              <input type="text" class="form-control" id="ps-dci-netmask" />
+                              <div id="ps-dci-subnet-checker"></div>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-md-3 control-label">网关地址：</label>
+                            <div class="col-md-8">
+                              <input type="text" class="form-control" id="ps-dci-gateway" />
+                              <div id="ps-dci-gateway-checker"></div>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-md-3 control-label">DNS地址：</label>
+                            <div class="col-md-8">
+                              <input type="text" class="form-control" id="ps-dci-dns" />
+                              <div id="ps-dci-dns-checker"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="tab-pane" id="ps-dci-tab5">
+                          <div class="form-group">
+                            <label class="col-md-3 control-label">所有PCI设备：</label>
+                            <div class="col-md-8">
+                              <select multiple="multiple" type="text" class="form-control" id="ps-dci-all-pci">
+                              </select>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-md-3 control-label">已选PCI设备：</label>
+                            <div class="col-md-8">
+                              <select multiple="multiple" type="text" class="form-control" id="ps-dci-pci">
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-actions" style="text-align:center">
+                      <button class="btn blue button-next" id="ps-dci-next">下一步<i class="m-icon-swapright m-icon-white"></i></button>
+                      <button class="btn blue button-finish" id="ps-dci-finish">完成<i class="m-icon-swapright m-icon-white"></i></button>
+                      <button class="btn red button-close" id="ps-dci-close">关闭<i class="m-icon-swapright m-icon-white"></i></button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="dialog-create-disk" class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" data-backdrop="static" style="display: none;">
+    <div class="modal-dialog">
+      <form id="form-create-disk" class="form-horizontal form-row-seperated" novalidate="novalidate">
+        <div class="modal-content">
+          <div class="modal-header" align="left">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title">创建磁盘</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="col-md-3 control-label">磁盘名称：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" id="ps-dcd-diskname" />
+                    <div id="ps-dcd-diskname-checker"></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">磁盘容量：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" placeholder="以GB为单位" id="ps-dcd-disksize" />
+                    <div id="ps-dcd-disksize-checker"></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">实际容量：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" readonly="readonly" id="ps-dcd-adisksize" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn blue" id="ps-create-disk">确定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="dialog-upload-iso" class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" data-backdrop="static" style="display: none;">
+    <div class="modal-dialog">
+      <form id="form-upload-iso" class="form-horizontal form-row-seperated" novalidate="novalidate">
+        <div class="modal-content">
+          <div class="modal-header" align="left">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title">上传安装文件</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="col-md-1 control-label"></label>
+                  <div class="col-md-10">
+                    <a class="btn btn-default btn-sm" id="ps-mount-usb">
+                      <span class="hidden-480">挂载</span>
+                    </a>
+                    <a class="btn btn-default btn-sm" id="ps-umount-usb">
+                      <span class="hidden-480">卸载</span>
+                    </a>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">磁盘容量：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" id="ps-dci-dcpu" />
+                    <div id="ps-dci-dns-checker"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="dialog-edit-idv-cpu" class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" data-backdrop="static" style="display: none;">
+    <div class="modal-dialog">
+      <form id="form-edit-idv-cpu" class="form-horizontal form-row-seperated" novalidate="novalidate">
+        <div class="modal-content">
+          <div class="modal-header" align="left">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title">修改CPU数目</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <input type="hidden" id="ps-deic-name" />
+                  <label class="col-md-3 control-label">CPU数目：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" id="ps-deic-cpu" />
+                    <div id="ps-deic-cpu-checker"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn blue" id="ps-deic-edit-cpu">确定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="dialog-edit-idv-memory" class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" data-backdrop="static" style="display: none;">
+    <div class="modal-dialog">
+      <form id="form-edit-idv-memory" class="form-horizontal form-row-seperated" novalidate="novalidate">
+        <div class="modal-content">
+          <div class="modal-header" align="left">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title">修改内存容量</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <input type="hidden" id="ps-deim-name" />
+                  <label class="col-md-3 control-label">内存容量：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" id="ps-deim-memory" />
+                    <div id="ps-deim-memory-checker"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn blue" id="ps-deim-edit-memory">确定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="dialog-edit-idv-sdisk" class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" data-backdrop="static" style="display: none;">
+    <div class="modal-dialog">
+      <form id="form-edit-idv-sdisk" class="form-horizontal form-row-seperated" novalidate="novalidate">
+        <div class="modal-content">
+          <div class="modal-header" align="left">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title">修改系统磁盘</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <input type="hidden" id="ps-deis-name" />
+                  <label class="col-md-3 control-label">系统磁盘：</label>
+                  <div class="col-md-8">
+                    <select class="form-control" id="ps-deis-sdisk">
+                    </select>
+                    <div id="ps-deis-sdisk-checker"></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">关机还原：</label>
+                  <div class="col-md-8" align="left">
+                    <input type="checkbox" value="1" style="width: 19px; height: 25px; padding: 0 5px 0 0; display: block; clear: left; float: left;" id="ps-deis-restore" >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">启动设备：</label>
+                  <div class="col-md-8" align="left">
+                    <input type="checkbox" value= "1" style="width: 19px; height: 25px; padding: 0 5px 0 0; display: block; clear: left; float: left;" id="ps-deis-boot" >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn blue" id="ps-deis-edit-sdisk">确定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="dialog-edit-idv-ddisk" class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" data-backdrop="static" style="display: none;">
+    <div class="modal-dialog">
+      <form id="form-edit-idv-ddisk" class="form-horizontal form-row-seperated" novalidate="novalidate">
+        <div class="modal-content">
+          <div class="modal-header" align="left">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title">修改数据磁盘</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <input type="hidden" id="ps-deid-name" />
+                  <label class="col-md-3 control-label">数据磁盘：</label>
+                  <div class="col-md-8">
+                    <select class="form-control" id="ps-deid-ddisk">
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">关机还原：</label>
+                  <div class="col-md-8" align="left">
+                    <input type="checkbox" value="1" style="width: 19px; height: 25px; padding: 0 5px 0 0; display: block; clear: left; float: left;" id="ps-deid-restore" >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn blue" id="ps-deid-edit-ddisk">确定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="dialog-edit-idv-iso" class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" data-backdrop="static" style="display: none;">
+    <div class="modal-dialog">
+      <form id="form-edit-idv-iso" class="form-horizontal form-row-seperated" novalidate="novalidate">
+        <div class="modal-content">
+          <div class="modal-header" align="left">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title">修改光盘</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <input type="hidden" id="ps-deii-name" />
+                  <label class="col-md-3 control-label">光盘：</label>
+                  <div class="col-md-8">
+                    <select class="form-control" id="ps-deii-cdrom">
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">启动设备：</label>
+                  <div class="col-md-8" align="left">
+                    <input type="checkbox" value="1" style="width: 19px; height: 25px; padding: 0 5px 0 0; display: block; clear: left; float: left;" id="ps-deii-boot" >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn blue" id="ps-deii-edit-cdrom">确定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="dialog-edit-idv-vfd" class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" data-backdrop="static" style="display: none;">
+    <div class="modal-dialog">
+      <form id="form-edit-idv-vfd" class="form-horizontal form-row-seperated" novalidate="novalidate">
+        <div class="modal-content">
+          <div class="modal-header" align="left">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title">修改软盘</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <input type="hidden" id="ps-deiv-name" />
+                  <label class="col-md-3 control-label">软盘：</label>
+                  <div class="col-md-8">
+                    <select class="form-control" id="ps-deiv-floppy">
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn blue" id="ps-deiv-edit-floppy">确定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="dialog-edit-idv-network" class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" data-backdrop="static" style="display: none;">
+    <div class="modal-dialog">
+      <form id="form-edit-idv-network" class="form-horizontal form-row-seperated" novalidate="novalidate">
+        <div class="modal-content">
+          <div class="modal-header" align="left">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title">修改网络</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <input type="hidden" id="ps-dein-name" />
+                  <label class="col-md-3 control-label">类型：</label>
+                  <div class="col-md-8">
+                    <select type="text" class="form-control" id="ps-dein-nettype">
+                      <option value=""></option>
+                      <option value="user">User</option>
+                      <option value="bridge">Bridge</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">IP地址：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" id="ps-dein-ipaddr" />
+                    <div id="ps-dci-dns-checker"></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">子网掩码：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" id="ps-dein-netmask" />
+                    <div id="ps-dci-dns-checker"></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">网关地址：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" id="ps-dein-gateway" />
+                    <div id="ps-dci-dns-checker"></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">DNS：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" id="ps-dein-dns" />
+                    <div id="ps-dci-dns-checker"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn blue" id="ps-dein-edit-network">确定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="dialog-edit-idv-pci" class="modal fade bs-modal-lg" tabindex="-1" data-width="400" aria-hidden="true" data-backdrop="static" style="display: none;">
+    <div class="modal-dialog modal-lg">
+      <form id="form-edit-idv-pci" class="form-horizontal form-row-seperated" novalidate="novalidate">
+        <div class="modal-content">
+          <div class="modal-header" align="left">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title">修改PCI</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <input type="hidden" id="ps-deip-name" />
+                <div class="form-group">
+                  <label class="col-md-12" text-align="left">所有PCI设备：</label>
+                  <div class="col-md-12">
+                    <select multiple="multiple" type="text" class="form-control" id="ps-deip-all-pci">
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-12" text-align="left">已选PCI设备：</label>
+                  <div class="col-md-12">
+                    <select multiple="multiple" type="text" class="form-control" id="ps-deip-pci">
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-12" text-align="left">涉及PCI设备：</label>
+                  <div class="col-md-12">
+                    <textarea class="form-control" rows="8" readonly="readonly" id="ps-deip-device"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn blue" id="ps-deip-edit-pci">确定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static" style="display: none;" id="shutdown">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" align="left">关机</h4>
+        </div>
+        <div class="modal-body" align="left"> 确定要关机吗？ </div>
+        <div class="modal-footer">
+          <button type="button" class="btn default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn blue" id="ps-shutdown">关机</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static" style="display: none;" id="reboot">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" align="left">重启</h4>
+        </div>
+        <div class="modal-body" align="left"> 确定要重启吗？ </div>
+        <div class="modal-footer">
+          <button type="button" class="btn default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn blue" id="ps-reboot">重启</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade bs-modal-lg" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static" style="display: none;" id="dialog-save-system">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" align="left">系统保存</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="col-md-3 control-label">类型</label>
+                <div class="col-md-8">
+                  <select class="form-control" id="ps-dss-type">
+                    <option value='disk' >磁盘</option>
+                    <option value='parts'>分区</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label">可选磁盘或分区</label>
+                <div class="col-md-3">
+                  <select multiple="multiple" type="text" class="form-control" name="all-diskparts" id="ps-dss-all-diskparts"></select>
+                </div>
+                <label class="col-md-2 control-label">已选磁盘或分区</label>
+                <div class="col-md-3">
+                  <select multiple="multiple" type="text" class="form-control" name="diskparts" id="ps-dss-diskparts"></select>
+                  <div id="ps-dss-diskparts-checker"></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label">映像路径</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" id="ps-dss-path"></input>
+                  <p class="help-block">注：若保存在本地，则留空；否则输入通过NFS导出的有效路径，格式为IPADDR:PATH。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn blue" id="ps-do-save">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade bs-modal-lg" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static" style="display: none;" id="dialog-restore-system">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" align="left">系统恢复</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="col-md-3 control-label">类型</label>
+                <div class="col-md-8">
+                  <select class="form-control" id="ps-drs-type">
+                    <option value='disk' >磁盘</option>
+                    <option value='parts'>分区</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label">可选磁盘或分区</label>
+                <div class="col-md-3">
+                  <select multiple="multiple" type="text" class="form-control" name="all-diskparts" id="ps-drs-all-diskparts"></select>
+                </div>
+                <label class="col-md-2 control-label">已选磁盘或分区</label>
+                <div class="col-md-3">
+                  <select multiple="multiple" type="text" class="form-control" name="diskparts" id="ps-drs-diskparts"></select>
+                  <div id="ps-drs-diskparts-checker"></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label">映像路径</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" id="ps-drs-path"></input>
+                  <p class="help-block">注：若恢复自本地，则留空；否则输入通过NFS导出的有效路径，格式为IPADDR:PATH。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn blue" id="ps-do-restore">恢复</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" style="display: none;" id="dialog-upload-system">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+          <h4 class="modal-title">系统上传</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="col-md-3 control-label">远程路径</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" id="ps-dus-path"></input>
+                  <p class="help-block">注：输入通过NFS导出的有效路径，格式为IPADDR:PATH。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn blue" id="ps-upload-system">确定</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" style="display: none;" id="dialog-download-system">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+          <h4 class="modal-title">系统下载</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="col-md-3 control-label">远程路径</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" id="ps-dds-path"></input>
+                  <p class="help-block">注：输入通过NFS导出的有效路径，格式为IPADDR:PATH。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn blue" id="ps-download-system">确定</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade bs-modal-lg" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static" style="display: none;" id="dialog-redirect-usb">
+    <div class="modal-dialog modal-lg">
+      <form action="" id="form-redirect-usb" class="form-horizontal form-row-seperated">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title">USB共享</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div id="ps-usbd-content"></div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="col-md-6" style="text-align:left">
+              <button type="button" class="btn green" id="ps-refresh-usbredir">刷新</button>
+            </div>
+            <div class="col-md-6" style="text-align:right">
+              <button type="button" data-dismiss="modal" class="btn">关闭</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" style="display: none;" id="dialog-terminal-bootloader">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+          <h4 class="modal-title">引导项</h4>
+        </div>
+        <div class="modal-body">
+          <form id="form-terminal-bootloader" class="form-horizontal">
+            <div class="row">
+              <div class="col-md-12" id="ps-dtb-dpselection"></div>
+              <div class="col-md-12" id="ps-dtb-bootloader"></div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn default" data-dismiss="modal">取消</button>
+              <button type="button" class="btn blue" id="ps-change-bootloader">确定</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static" style="display: none;" id="dialog-upgrade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" align="left">系统升级</h4>
+        </div>
+        <div class="modal-body" align="left"> 要升级系统，请将含有升级软件包的U盘插入到终端的USB接口上，然后点击确定按钮。升级软件包文件名为update_*.tgz，其中*为版本号。升级软件包内容必须符合要求。请从厂商获取升级软件包。 </div>
+        <div class="modal-footer">
+          <button type="button" class="btn default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn blue" id="ps-upgrade-system">升级</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static" style="display: none;" id="dialog-license">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" align="left">许可证更新</h4>
+        </div>
+        <div class="modal-body" align="left">
+          <div class="form-group">
+            <label class="col-md-3 control-label">模块</label>
+            <div class="col-md-9">
+              <select class="form-control" name="module" id="ps-license-module">
+                <option value=""></option>
+                <option value="vdi"     >桌面接入</option>
+                <option value="terminal">终端管理</option>
+                <option value="pxe"     >云端镜像</option>
+                <option value="usb"     >USB运维 </option>
+                <option value="usbredir">USB共享 </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+          要更新许可证，请将含有许可证文件包的U盘插入到终端的USB接口上，并从上述列表中选择对应的模块，然后点击确定按钮。
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn blue" id="ps-upload-license">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade bs-modal-lg" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static" style="display: none;" id="dialog-file">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" align="left">文件复制</h4>
+        </div>
+        <div class="modal-body" align="left">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="portlet">
+                <div class="portlet-body">
+                  <div class="form-group">
+                    <div class="col-md-12">
+                      <button type="button" class="btn btn-default" id="ps-df-mount"  >挂载</button>
+                      <button type="button" class="btn btn-default" id="ps-df-unmount">卸载</button>
+                    </div>
+                  </div>
+                  <div class="col-md-12 margin-top-20">
+                    <div class="table-scrollable" align="center" id="pi-usb-file" style="height:320px; overflow:auto;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="portlet">
+                <div class="portlet-body">
+                  <div class="form-group">
+                    <div class="col-md-8">
+                      <input type="text" class="form-control" id="ps-df-path">
+                    </div>
+                    <div class="col-md-4">
+                      <button type="button" class="btn btn-default" id="ps-df-refresh">刷新</button>
+                    </div>
+                  </div>
+                  <div class="col-md-12 margin-top-20">
+                    <div class="table-scrollable" align="center" id="pi-local-file" style="height:320px; overflow:auto;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static" style="display: none;" id="dialog-copy-progress">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" align="left">复制进度</h4>
+        </div>
+        <div class="modal-body" align="left">
+          <input type="hidden" id="ps-task-id">
+          <div class="form-group">
+            <div class="col-md-12">
+              <div class="bar" id="ps-task-bar" style="background:#30b1e2; text-align:right; width=0%" id="ps-task-bar-'+v+'">&nbsp;0%</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn blue" id="ps-end-copy-progress">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static" style="display: none;" id="dialog-log">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" align="left">日志导出</h4>
+        </div>
+        <div class="modal-body" align="left"> 要导出日志，请将U盘插入到终端的USB接口上，然后点击确定按钮。终端的日志文件将保存在所有已插入U盘的根>目录下，文件名为vflog.tar。 </div>
+        <div class="modal-footer">
+          <button type="button" class="btn default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn blue" id="ps-export-log">导出</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static" style="display: none;" id="dialog-set-password">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" align="left">密码设置</h4>
+        </div>
+        <div class="modal-body">
+          <form id="form-set-password" class="form-horizontal">
+            <div class="form-group">
+              <label class="col-md-3 control-label">密码</label>
+              <div class="input-icon col-md-8"> <i class="fa fa-lock"></i>
+                <input class="form-control" type="password" autocomplete="off" name="password1" id="dsp-password">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">确认密码</label>
+              <div class="input-icon col-md-8"> <i class="fa fa-lock"></i>
+                <input class="form-control" type="password" autocomplete="off" name="password2">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn default" data-dismiss="modal">取消</button>
+              <button type="submit" class="btn blue">确定</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="static/js/jquery.min.js"                 ></script>
+<script type="text/javascript" src="static/js/bootstrap.min.js"              ></script>
+<script type="text/javascript" src="static/js/jquery.form.js"                ></script>
+<script type="text/javascript" src="static/js/jquery.bootstrap.wizard.min.js"></script>
+<script type="text/javascript" src="static/js/jquery.validate.min.js"        ></script>
+<script type="text/javascript" src="static/js/jquery.blockui.min.js"         ></script>
+<script type="text/javascript" src="static/js/metronic.js"                   ></script>
+<script type="text/javascript" src="static/js/common.js"                     ></script>
+<script type="text/javascript" src="static/js/vtcajax.js"                    ></script>
+<script type="text/javascript" src="static/js/system.js"                     ></script>
+<script type="text/javascript" src="static/js/idv.js"                        ></script>
+<script type="text/javascript" src="static/js/idv-wizard.js"                 ></script>
+<!-- Begin date and time -->
+<script type="text/javascript" src="static/js/bootstrap-datepicker.js"       ></script>
+<script type="text/javascript" src="static/js/bootstrap-timepicker.min.js"   ></script>
+<script type="text/javascript" src="static/js/components-pickers.js"         ></script>
+<!-- End date and time -->
+<script type="text/javascript" src="static/js/bootstrap-switch.min.js"       ></script>
+<script>
+    var bodyHeight = Math.max( window.innerHeight, document.body.clientHeight );
+    var bodyWidth = Math.max( window.innerWidth, document.body.clientWidth );
+    document.getElementById("management-content").style.marginTop = ((bodyHeight - 560)/2)+"px";
+    document.getElementById("management-content").style.marginLeft = ((bodyWidth - 800)/2)+"px";
+    document.getElementById("management-content").style.height = "560px";
+    document.getElementById("management-content").style.width = "800px";
+    $(function() {
+        Metronic.init();
+        ComponentsPickers.init();
+        SystemObj.init();
+        IdvObj.init();
+        IdvWizard.init();
+    });
+</script>
+</body>
+</html>

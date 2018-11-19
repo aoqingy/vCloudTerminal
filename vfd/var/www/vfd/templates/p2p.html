@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>云终端</title>
+<link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="static/css/simple-line-icons.min.css">
+<link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="static/css/components-rounded.css">
+<link rel="stylesheet" type="text/css" href="static/css/style.css">
+<!--
+<link rel="stylesheet" type="text/css" href="static/css/picnic.css">
+-->
+<link rel="stylesheet" type="text/css" href="static/css/p2p.css">
+<link rel="shortcut icon" href="static/img/favicon.ico"/>
+</head>
+
+<body>
+<div class="all" id="management-content">
+  <div class="header">
+    <table width="100%" border="0">
+      <tr>
+        <td class="header_left" width="50"><a href="/" style="color:#fff; font-family:'WenQuanYi Micro Hei', serif; font-size:16px; text-decoration:none;">云终端</a></td>
+        <td class="header_left" style="color:#ccc;font-size:12px;">[Alt+Home]</td>
+        <td class="header_right">
+          <a style="color:#fff; font-size:16px; text-decoration:none; padding:3px" title="主页" href="/"><i class="fa fa-home"></i></a>
+          <a style="color:#fff; font-size:16px; text-decoration:none; padding:3px" title="设置" href="/setting"><i class="fa fa-cog"></i></a>
+          <a style="color:#fff; font-size:16px; text-decoration:none; padding:3px" title="重启" data-toggle="modal" href="#reboot"><i class="fa fa-undo"></i></a>
+          <a style="color:#fff; font-size:16px; text-decoration:none; padding:3px" title="关机" data-toggle="modal" href="#shutdown"><i class="fa fa-power-off"></i></a>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="content" >
+    <div class="container">
+      <div class="portlet light">
+        <div class="portlet-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="col-md-3">
+                <div id="peer-camera">
+                  <video autoplay width="260px" height="260px"></video>
+                </div>
+                <div id="self-camera">
+                  <video autoplay width="260px" height="260px"></video>
+                </div>
+              </div>
+              <div class="col-md-9">
+                <div>
+                  <textarea class="form-control" rows="6" readonly id="p2p-messages"></textarea>
+                </div>
+                <div>
+                  <input class="form-control" type="text" placeholder="" id="p2p-message">
+                </div>
+                <div>
+                  <button type="button" class="btn btn-default hidden" id="p2p-send">发送</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!--
+      <div id="peer-camera" class="camera">
+        <video width="300" height="300" autoplay></video>
+      </div>
+      <div id="my-camera" class="camera">
+        <video width="200" height="200" autoplay></video>
+      </div>
+-->
+  </div>
+</div>
+<script type="text/javascript" src="static/js/jquery.min.js"   ></script>
+<script type="text/javascript" src="static/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="static/js/metronic.js"     ></script>
+<script type="text/javascript" src="static/js/common.js"       ></script>
+<script type="text/javascript" src="static/js/vtcajax.js"      ></script>
+<!--
+<script type="text/javascript" src="static/js/handlebars.js"></script>
+-->
+<script type="text/javascript" src="static/js/peer.js"         ></script>
+<script type="text/javascript" src="static/js/p2p.js"          ></script>
+<script>
+    var uuid = "{{ uuid }}";
+    var bodyHeight = Math.max( window.innerHeight, document.body.clientHeight );
+    document.getElementById("management-content").style.marginTop = ((bodyHeight - 540)/2)+"px";
+    $(function() {
+        Metronic.init(); // init metronic core components
+        P2PObj.init();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+Package: vfd
+Version: 1.16.12
+Section: misc
+Priority: optional
+Architecture: all
+Depends: firefox
+Maintainer: aoqingyun<aoqingyun@virtfan.com>
+Description: vClassTerminal

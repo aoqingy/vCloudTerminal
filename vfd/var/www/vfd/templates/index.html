@@ -1,0 +1,314 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>云终端</title>
+
+<link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css" /> <!-- Required (aoqingy) -->
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css"    /> <!-- Required (aoqingy) -->
+<link rel="stylesheet" type="text/css" href="/static/css/datepicker3.css"      />
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-timepicker.min.css"/>
+<link rel="stylesheet" type="text/css" href="/static/css/components-rounded.css"      /> <!-- Required (aoqingy) -->
+<link rel="stylesheet" type="text/css" href="/static/css/simple-line-icons.min.css"   /> <!-- Required (aoqingy) -->
+<link rel="stylesheet" type="text/css" href="/static/css/style.css"                   /> <!-- Required (aoqingy) -->
+<!--
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-table.css"/>
+<link rel="stylesheet" type="text/css" href="/static/css/layout.css"         />
+<link rel="stylesheet" type="text/css" href="/static/css/default.css"        />
+-->
+<link rel="stylesheet" type="text/css" href="static/keyboard/css/keyboard.css"              />
+<link rel="stylesheet" type="text/css" href="static/keyboard/css/keyboard-basic.css"        />
+<link rel="stylesheet" type="text/css" href="static/keyboard/css/keyboard-previewkeyset.css"/>
+<link rel="shortcut icon" href="static/img/favicon.ico"/>
+</head>
+<body>
+
+<div class="all page-content" id="management-content">
+  <div class="row">
+    <div class="portlet box blue-madison">
+      <div class="portlet-title">
+        <div class="caption">云终端[Alt+Home]
+        </div>
+        <div class="tools">
+          <a style="color:#fff; font-size:16px; text-decoration:none; padding:3px" title="设置" id="pi-setting"><i class="fa fa-cog"></i></a>
+          <a style="color:#fff; font-size:16px; text-decoration:none; padding:3px" title="重启" data-toggle="modal" href="#reboot"><i class="fa fa-undo"></i></a>
+          <a style="color:#fff; font-size:16px; text-decoration:none; padding:3px" title="关机" data-toggle="modal" href="#shutdown"><i class="fa fa-power-off"></i></a>
+        </div>
+      </div>
+      <div class="portlet-body">
+        <div class="row">
+          <div class="col-md-12 margin-top-20">
+            <input type="hidden" id="pi-nickname">
+            <input type="hidden" id="pi-product" >
+            <input type="hidden" id="pi-serverip">
+            <input type="hidden" id="pi-username">
+            <input type="hidden" id="pi-password">
+            <input type="hidden" id="pi-domain"  >
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-2" align="center">
+              <img width="80" height="80" src="static/img/desk2-spice.png" />
+            </div>
+            <div class="col-md-2" align="center">
+              <img width="80" height="80" src="static/img/desk2-rdp2.png" />
+            </div>
+            <div class="col-md-2" align="center">
+              <img width="80" height="80" src="static/img/desk2.png" />
+            </div>
+            <div class="col-md-2" align="center">
+              <img width="80" height="80" src="static/img/app2.png" />
+            </div>
+            <div class="col-md-2" align="center">
+              <img width="80" height="80" src="static/img/desk2-spice.png" />
+            </div>
+            <div class="col-md-1">
+            </div>
+          </div>
+          <div class="col-md-12 margin-top-20">
+            <div class="table-scrollable" align="center" id="pi-connection-area" style="height:320px; overflow:auto;">
+            </div>
+          </div>
+          <div class="col-md-12 margin-top-10 margin-bottom-10" align="center" id="pi-uuid" style="height:20px;">
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 关机确认对话框 -->
+  <div class="modal fade" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static" style="display: none;" id="shutdown">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" align="left">关机</h4>
+        </div>
+        <div class="modal-body" align="left"> 确定要关机吗？ </div>
+        <div class="modal-footer">
+          <button type="button" class="btn default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn blue" id="pi-shutdown">关机</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 重启确认对话框 -->
+  <div class="modal fade" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static" style="display: none;" id="reboot">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" align="left">重启</h4>
+        </div>
+        <div class="modal-body" align="left"> 确定要重启吗？ </div>
+        <div class="modal-footer">
+          <button type="button" class="btn default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn blue" id="pi-reboot">重启</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 校验密码对话框 -->
+  <div class="modal fade" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static" style="display: none;" id="dialog-verify-password">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" align="left">密码</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="col-md-3 control-label">密码：</label>
+                <div class="col-md-7">
+                  <input type="password" class="form-control" id="dvp-password">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn blue" id="pi-verify-password">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 连接帐户对话框 -->
+  <div class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" data-backdrop="static" style="display: none;" id="dialog-connect-account">
+    <div class="modal-dialog">
+      <form id="form-connect-account" class="form-horizontal form-row-seperated" novalidate="novalidate">
+        <div class="modal-content">
+          <div class="modal-header" align="left">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title">帐户信息</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="col-md-3 control-label">用户名：</label>
+                  <div class="col-md-7">
+                    <input type="text" class="form-control" id="dca-username">
+                  </div>
+                  <div class="col-md-1">
+                    <img id="dca-username-keyboard" title="Click to open the virtual keyboard" src="static/keyboard/css/images/keyboard.svg">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">密码：</label>
+                  <div class="col-md-7">
+                    <input type="password" class="form-control" id="dca-password">
+                  </div>
+                  <div class="col-md-1">
+                    <img id="dca-password-keyboard" title="Click to open the virtual keyboard" src="static/keyboard/css/images/keyboard.svg">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn blue" id="pi-connect-account">确定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 重连桌面对话框 -->
+  <div class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" data-backdrop="static" style="display: none;" id="dialog-reconnect-desktop">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" align="left">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+          <h4 class="modal-title">重连桌面</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="col-md-12 control-label" id="prd-message"></label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" id="pd-reconnect-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 连接其他帐户对话框 -->
+  <div class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" data-backdrop="static" style="display: none;" id="dialog-connect-other-account">
+    <div class="modal-dialog">
+      <form id="form-connect-other-account" class="form-horizontal form-row-seperated" novalidate="novalidate">
+        <div class="modal-content">
+          <div class="modal-header" align="left">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title">帐户信息</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="col-md-3 control-label">用户名：</label>
+                  <div class="col-md-7">
+                    <input type="text" class="form-control" id="dcoa-username">
+                  </div>
+                  <div class="col-md-1">
+                    <img id="dcoa-username-keyboard" title="Click to open the virtual keyboard" src="static/keyboard/css/images/keyboard.svg">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">密码：</label>
+                  <div class="col-md-7">
+                    <input type="password" class="form-control" id="dcoa-password">
+                  </div>
+                  <div class="col-md-1">
+                    <img id="dcoa-password-keyboard" title="Click to open the virtual keyboard" src="static/keyboard/css/images/keyboard.svg">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn blue" id="pd-connect-other-account">确定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 消息对话框 -->
+  <div class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" data-backdrop="static" style="display: none;" id="dialog-message-box">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" align="left">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+          <h4 class="modal-title">消息</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="col-md-12 control-label" id="pi-message"></label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" id="pi-cancel-connect">取消</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script type="text/javascript" src="static/js/jquery.min.js"                            ></script>
+<script type="text/javascript" src="static/js/jquery.form.js"                           ></script>
+<script type="text/javascript" src="static/js/jquery.bootstrap.wizard.min.js"           ></script>
+<script type="text/javascript" src="static/js/jquery.validate.min.js"                   ></script>
+<script type="text/javascript" src="static/js/jquery.blockui.min.js"                    ></script>
+<script type="text/javascript" src="static/js/bootstrap.min.js"                         ></script>
+<script type="text/javascript" src="static/keyboard/js/jquery.keyboard.js"              ></script>
+<script type="text/javascript" src="static/keyboard/js/jquery.keyboard.extension-all.js"></script>
+<script type="text/javascript" src="static/js/base64.js"                                ></script>
+<script type="text/javascript" src="static/js/metronic.js"                              ></script>
+<script type="text/javascript" src="static/js/common.js"                                ></script>
+<script type="text/javascript" src="static/js/vtcajax.js"                               ></script>
+<script type="text/javascript" src="static/js/index.js"                                 ></script>
+<script type="text/javascript" src="static/js/idv-wizard.js"                            ></script>
+<script type="text/javascript" src="static/js/desktop.js"                               ></script>
+<script>
+    var whereFrom = "{{ var1 }}";
+    var windows_up_img   = "static/img/os/icon-windows-up.png";
+    var windows_down_img = "static/img/os/icon-windows-down.png";
+    var other_up_img     = "static/img/os/icon-other-up.png";
+    var other_down_img   = "static/img/os/icon-other-down.png";
+    var bodyHeight = Math.max( window.screen.height, document.body.clientHeight );
+    var bodyWidth = Math.max( window.screen.width, document.body.clientWidth );
+    document.getElementById("management-content").style.marginTop = ((bodyHeight - 560)/2)+"px";
+    document.getElementById("management-content").style.marginLeft = ((bodyWidth - 800)/2)+"px";
+    document.getElementById("management-content").style.height = "560px";
+    document.getElementById("management-content").style.width = "800px";
+    $(function() {
+        Metronic.init();
+        IndexObj.init();
+        DesktopObj.init();
+    });
+</script>
+</body>
+</html>
+
+<!--元素命名规范-->
+<!--pi		page	index		-->
+<!--ps		page	setting		-->
+<!--pm		page	management	-->
+<!--das		dialog	add		server	-->
+<!--dad		dialog	add		desktop	-->
+<!--daa		dialog	add		application	-->
+<!--dat		dialog	add		storage		-->
+<!--dam		dialog	add		media		-->

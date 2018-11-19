@@ -1,0 +1,13 @@
+prefix=/opt/
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: spice-client-glib-2.0
+Description: SPICE Client GLib 2.0 library
+Version: 0.30-dirty
+
+Requires: spice-protocol
+Requires.private:  pixman-1 >= 0.17.7 openssl libswscale >= 3.1.101 libavcodec >= 56.60.100 libavutil >= 54.31.100 libavformat >= 56.40.101
+Libs: -L${libdir} -lspice-client-glib-2.0
+Cflags: -I${includedir}/spice-client-glib-2.0

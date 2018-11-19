@@ -1,0 +1,114 @@
+Starting /usr/sbin/ocs-sr at 2018-02-06 16:17:53 UTC...
+*****************************************************.
+Clonezilla image dir: /home/partimag
+Shutting down the Logical Volume Manager
+  Shutting Down logical volume: /dev/VolGroup/lv_root 
+  Shutting Down logical volume: /dev/VolGroup/lv_swap 
+  Shutting Down volume group: VolGroup 
+Finished Shutting down the Logical Volume Manager
+The selected devices: vda
+The selected devices: vda
+Searching for data partition(s)...
+Searching for swap partition(s)...
+The data partition to be saved:   vda1 vda2
+The swap partition to be saved:  
+The selected devices: vda1 vda2
+Shutting down the Logical Volume Manager
+  Shutting Down logical volume: /dev/VolGroup/lv_root 
+  Shutting Down logical volume: /dev/VolGroup/lv_swap 
+  Shutting Down volume group: VolGroup 
+Finished Shutting down the Logical Volume Manager
+Saving block devices info in /home/partimag/image/blkdev.list...
+Saving block devices attributes in /home/partimag/image/blkid.list...
+Checking the integrity of partition table in the disk /dev/vda... 
+Reading the partition table for /dev/vda...RETVAL=0
+*****************************************************.
+The first partition of disk /dev/vda starts at 2048.
+Saving the hidden data between MBR (1st sector, i.e. 512 bytes) and 1st partition, which might be useful for some recovery tool, by:
+dd if=/dev/vda of=/home/partimag/image/vda-hidden-data-after-mbr skip=1 bs=512 count=2047
+2047+0 records in
+2047+0 records out
+1048064 bytes (1.0 MB, 1.0 MiB) copied, 0.0259133 s, 40.4 MB/s
+*****************************************************.
+Saving the MBR data for vda...
+1+0 records in
+1+0 records out
+512 bytes copied, 0.00449021 s, 114 kB/s
+Starting saving /dev/vda1 as /home/partimag/image/vda1.XXX...
+/dev/vda1 filesystem: ext4.
+*****************************************************.
+*****************************************************.
+Use partclone with pigz to save the image.
+Image file will be split with size limit 4000 MB.
+*****************************************************.
+If this action fails or hangs, check:
+* Is the disk full ?
+*****************************************************.
+Run partclone: partclone.ext4 -z 10485760 -L /var/log/partclone.log -c -s /dev/vda1 --output - | pigz -c --fast -b 1024 -p 16 -R | split -b 4000m - /home/partimag/image/vda1.ext4-ptcl-img.gz. 2> /tmp/split_error.ctiTHg
+Partclone v0.2.86 http://partclone.org
+Starting to clone device (/dev/vda1) to image (-)
+Reading Super Block
+we need memory: 69188 bytes
+image head 4160, bitmap 64000, crc 1028 bytes
+Calculating bitmap... Please wait... done!
+File system:  EXTFS
+Device size:  524.3 MB = 512000 Blocks
+Space in use:  87.5 MB = 85466 Blocks
+Free Space:   436.8 MB = 426534 Blocks
+Block size:   1024 Byte
+Total block 512000
+Syncing... OK!
+Partclone successfully cloned the device (/dev/vda1) to the image (-)
+>>> Time elapsed: 4.22 secs (~ .070 mins)
+*****************************************************.
+Finished saving /dev/vda1 as /home/partimag/image/vda1.ext4-ptcl-img.gz
+*****************************************************.
+Parsing LVM layout...
+VolGroup /dev/vda2 gzi35J-isZf-Q8VS-gv3c-8tj5-Dp4R-X2qOil
+Parsing logical volumes...
+Saving the VG config... 
+File descriptor 5 (/var/www/vfd/log/vfd.log) leaked on vgcfgbackup invocation. Parent PID 4512: /bin/bash
+  Volume group "VolGroup" successfully backed up.
+done.
+Checking if the VG config was saved correctly... 
+done.
+Saving /dev/VolGroup/lv_root as filename: VolGroup-lv_root. /dev/VolGroup/lv_root info: Linux rev 1.0 ext4 filesystem data, UUID=fa3624f1-ab98-46b3-bda7-160cfb8cd534 (extents) (large files) (huge files)
+Starting saving /dev/VolGroup/lv_root as /home/partimag/image/VolGroup-lv_root.XXX...
+/dev/VolGroup/lv_root filesystem: ext4.
+*****************************************************.
+*****************************************************.
+Use partclone with pigz to save the image.
+Image file will be split with size limit 4000 MB.
+*****************************************************.
+If this action fails or hangs, check:
+* Is the disk full ?
+*****************************************************.
+Run partclone: partclone.ext4 -z 10485760 -L /var/log/partclone.log -c -s /dev/VolGroup/lv_root --output - | pigz -c --fast -b 1024 -p 16 -R | split -b 4000m - /home/partimag/image/VolGroup-lv_root.ext4-ptcl-img.gz. 2> /tmp/split_error.3n2dnt
+Partclone v0.2.86 http://partclone.org
+Starting to clone device (/dev/VolGroup/lv_root) to image (-)
+Reading Super Block
+we need memory: 1501508 bytes
+image head 4160, bitmap 1493248, crc 4100 bytes
+Calculating bitmap... Please wait... done!
+File system:  EXTFS
+Device size:   48.9 GB = 11945984 Blocks
+Space in use:   6.3 GB = 1530649 Blocks
+Free Space:    42.7 GB = 10415335 Blocks
+Block size:   4096 Byte
+Total block 11945984
+Syncing... OK!
+Partclone successfully cloned the device (/dev/VolGroup/lv_root) to the image (-)
+>>> Time elapsed: 190.61 secs (~ 3.176 mins)
+*****************************************************.
+Finished saving /dev/VolGroup/lv_root as /home/partimag/image/VolGroup-lv_root.ext4-ptcl-img.gz
+*****************************************************.
+Saving /dev/VolGroup/lv_swap as filename: VolGroup-lv_swap. /dev/VolGroup/lv_swap info: Linux/i386 swap file (new style), version 1 (4K pages), size 1032191 pages, no label, UUID=875ea215-2008-42ca-91f2-1ee994591b3c
+End of saveparts job for image /home/partimag/image.
+*****************************************************.
+End of savedisk job for image image.
+Checking if udevd rules have to be restored...
+This program is not started by Clonezilla server, so skip notifying it the job is done.
+Finished!
+Now syncing - flush filesystem buffers...
+
+Ending /usr/sbin/ocs-sr at 2018-02-06 16:21:23 UTC...

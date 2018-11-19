@@ -1,0 +1,148 @@
+<html>
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>我的桌面</title>
+  <link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="static/css/simple-line-icons.min.css">
+  <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="static/css/components-rounded.css">
+  <link rel="stylesheet" type="text/css" href="static/css/style.css">
+  <link rel="shortcut icon" href="static/img/favicon.ico"/>
+  <style type="text/css">
+    body{
+      background-size:100%;
+      font-family:"Microsoft YaHei";
+    }
+    .vdesks {
+      position:absolute;
+      background-color:rgba(107,107,107,0.3);
+      padding:0px 15px 15px 0px;
+      top:50%;
+      left:50%;
+      margin:-100px 0 0 -420px;
+      width:840px;
+      height:200px;
+      text-align:center;
+      overflow: auto;
+    }
+    .vdesk{
+      width:200px;
+      display:inline-block;
+      padding:15px 0px;
+    }
+    .vdesk-img{
+      
+    }
+    .vdesk-name{
+      text-align:center;
+      color:#fff;
+      font-weight:700;
+    }
+    .no_vm{
+      color:#FFF;
+      font-size:18px;
+      padding-top:80px;
+      text-align:center;
+    }
+  </style>
+</head>
+<body>
+  <div style="position: relative; margin: 0 auto; width: 840px; height: 540px;">
+    <div class="vdesks" id="vdesks-area"></div>
+    <div style="padding-top:400px; text-align:center;">
+        <a style="background-color:rgba(107,107,107,0.3); color:#fff; padding:10px 15px; text-decoration:none" href="/"><i class="fa fa-arrow-circle-o-left "></i> 返回 </a>
+        <a style="padding:10px 15px; text-decoration:none"><a>
+        <a style="background-color:rgba(107,107,107,0.3); color:#fff; padding:10px 15px; text-decoration:none" href="javascript:void(0)" class="refresh"><i class="fa fa-refresh "></i> 刷新 </a>
+    </div>
+  </div>
+
+  <!-- 重连桌面对话框 -->
+  <div id="dialog-reconnect-desktop" class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" align="left">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+          <h4 class="modal-title">重连桌面</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="col-md-12 control-label" id="prd-message"></label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" id="pd-reconnect-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 连接其他帐户对话框 -->
+  <div id="dialog-connect-other-account" class="modal fade" tabindex="-1" data-width="400" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <form action="" id="form-connect-account" class="form-horizontal form-row-seperated" novalidate="novalidate">
+        <div class="modal-content">
+          <div class="modal-header" align="left">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title" style="font-family: 'WenQuanYi Micro Hei', serif;">帐户信息</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="col-md-3 control-label">用户名：</label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" id="dcoa-username">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">密码：</label>
+                  <div class="col-md-8">
+                    <input type="password" class="form-control" id="dcoa-password">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn blue" id="pd-connect-other-account">确定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+<script type="text/javascript" src="static/js/jquery.min.js"         ></script>
+<script type="text/javascript" src="static/js/jquery.form.js"        ></script>
+<script type="text/javascript" src="static/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="static/js/jquery.blockui.min.js" ></script>
+<script type="text/javascript" src="static/js/bootstrap.min.js"      ></script>
+<script type="text/javascript" src="static/js/metronic.js"           ></script>
+<script type="text/javascript" src="static/js/common.js"             ></script>
+<script type="text/javascript" src="static/js/vtcajax.js"            ></script>
+<script type="text/javascript" src="static/js/desktop.js"            ></script>
+<script>
+    var serverip = "{{ serverip }}";
+    var username = "{{ username }}";
+    var password = "{{ password }}";
+    var domain   = "{{ domain }}";
+    var conntype = "{{ conntype }}";
+    var windows_up_img   = "static/img/os/icon-windows-up.png";
+    var windows_down_img = "static/img/os/icon-windows-down.png";
+    var other_up_img     = "static/img/os/icon-other-up.png";
+    var other_down_img   = "static/img/os/icon-other-down.png";
+    var count = 0;
+    $(function() {
+        DesktopObj.init();
+        if (count == 0) {
+            getDesktops(scb_getDesktops, ecb_getDesktops, serverip, username, password, domain);
+        }
+        count = count + 1;
+    });
+</script>
+</body>
+</html>

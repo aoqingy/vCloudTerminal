@@ -1,0 +1,331 @@
+系统安装步骤 (armhf)
+
+1.	基本系统安装
+1. 基本系统分区，一个boot分区 >30MB，fat格式或者ext4格式，一个root分区ext4格式,
+可以采用 dd已有的card镜像的方式
+dd if=linaro-server-cb2-card0-hdmi-v1.0.img of=/dev/sdb bs=1M
+dd 之后需要等待至少一分钟，等待数据sync完成。
+2. 重新插拔tf卡，系统会出现/dev/sdb1和/dev/sdb2。 分别挂载到/mnt/boot和/mnt/root目录。
+3. 更新uboot。
+dd if=u-boot-sunxi-with-spl.bin.usbok of=/dev/sdb bs=1k seek=8
+4. 更新内核
+cp dan-108n/uImage /mnt/boot/uImage
+5. 更新lib modules
+cp -af dan-108n/lib/modules/3.4.108-00086-ga90ba7a-dirty /mnt/root/lib/modules
+6. 更新script.bin
+cp -af script.bin.wifi  /mnt/boot/script.bin
+cp -af boot.scr.usbok /mnt/boot/boot.scr
+7. 更新usb_power.sh 脚本。
+chmod +x usb_power.sh
+cp usb_power.sh  /mnt/root/root/usb_power.sh
+然后修改 /mnt/root/etc/init.d/rcS 文件，在其中插入一行
+/root/usb_power.sh
+7. Sync然后卸载/mnt/boot和/mnt/root ，等待至少一分钟后移除
+8. 插入tf卡到杰拓板子上，开启之后等待一会（会自动重启一次，执行root分区的resize），应该可以看到usb接口上电并且HDMI显示屏上有输出，可以插入usb键盘登录。
+
+
+2.	显卡驱动安装
+2.1.	安装UMP
+apt-get install git build-essential autoconf libtool
+apt-get install debhelper dh-autoreconf pkg-config
+git clone https://github.com/linux-sunxi/libump.git
+cd libump
+dpkg-buildpackage -b  编译
+dpkg -i ../libump_*.deb  安装
+
+也可以通过源码直接安装
+autoreconf -i
+./configure --prefix=/usr
+make
+make install
+
+2.2.	安装Mali
+首先确认modprobe mali 可以加载驱动成功
+apt-get install git build-essential autoconf automake
+apt-get install xutils-dev libdri2-dev
+apt-get install libx11-dev libxext-dev libdrm-dev x11proto-dri2-dev libxfixes-dev
+
+git clone --recursive https://github.com/linux-sunxi/sunxi-mali.git
+cd sunxi-mali
+make config
+
+Config过程的基本输出类似
+rm -f config.mk
+make config.mk
+make[1]: Entering directory `/home/libv/sunxi/sunxi-mali'
+make -f Makefile.config
+ABI="armhf" (Detected)
+VERSION="r3p0" (Detected)
+EGL_TYPE="x11" (Detected)
+make[2]: Entering directory `/home/libv/sunxi/sunxi-mali'
+echo "MALI_VERSION ?= r3p0" > config.mk
+echo "MALI_LIBS_ABI ?= armhf" >> config.mk
+echo "MALI_EGL_TYPE ?= x11" >> config.mk
+make[2]: Leaving directory `/home/libv/sunxi/sunxi-mali'
+make[1]: Leaving directory `/home/libv/sunxi/sunxi-mali'
+
+执行make install
+
+2.3.	安装fbturbo驱动
+apt-get install git build-essential xorg-dev xutils-dev x11proto-dri2-dev libltdl-dev libtool automake  xserver-xorg-dev
+
+git clone -b 0.4.0 https://github.com/ssvb/xf86-video-fbturbo.git
+cd xf86-video-fbturbo
+autoreconf -vi
+./configure --prefix=/usr
+make
+make install
+
+rm -f /usr/share/X11/xorg.conf.d/99-sunxifb.conf
+cp xorg.conf /etc/X11/xorg.conf
+
+2.4.	配置xorg.conf
+vi /etc/X11/xorg.conf
+    增加一行Option    "HWCursor" "off" 解决鼠标在X下面显示异常问题
+    增加ServerFlags   关闭屏幕保护
+    另外，使用X -configure 可以创建一个新的xorg.conf.new文件模板
+    如果需要禁用X窗口的Ctl+ALT+Fn 切换，
+
+Section "Device"
+    Identifier      "Allwinner A10/A13 FBDEV"
+    Driver          "fbturbo"
+    Option          "fbdev" "/dev/fb0"
+    Option          "HWCursor" "off"  		##<<== important
+    Option          "SwapbuffersWait" "true"
+EndSection
+
+Section "ServerFlags"
+    Option          "DontVTSwitch" "true"       ##禁用X窗口的Ctl+ALT+Fn 切换
+    Option          "BlankTime" "0"
+    Option          "StandbyTime" "0"
+    Option          "OffTime" "0"
+    Option          "SuspendTime" "0"
+EndSection
+
+
+2.5.	启动X
+测试X 可以工作 (确认不存在/root/.xinitrc 文件，/etc/X11/xinit/xinitrc文件为默认）
+apt-get install xinit
+xinit
+也可以安装blackbox窗口管理器用于测试。
+apt-get install blackbox
+ssh调试
+export DISPLAY=:0
+X &
+blackbox
+
+3.	自动全屏程序
+3.1.	全屏实现方式[R-kiosk & matchbox]
+apt-get install firefox
+启动firefox，安装插件 https://addons.mozilla.org/en-US/firefox/addon/1659
+此插件是将firefox作为全屏单一程序使用
+
+link status
+安装插件 https://addons.mozilla.org/en-us/firefox/addon/status-4-evar/
+
+set homepage
+    /etc/linaro/ffox-homepage.properties
+
+解决中文乱码
+    apt-get install fonts-wqy-zenhei
+
+firefox not remember password
+    option->security->password uncheck
+
+apt-get install matchbox
+如果没有apt-get remove blackbox ，需要 update-alternatives --set x-window-manager /usr/bin/matchbox-window-manager
+
+然后startx 测试，matchbox窗口管理器默认窗口没有任何显示。
+可以通过ssh 会话  export DISPLAY=:0 && xterm 查看启动的任何程序都是全屏的（但是有标题栏）。
+只有以matchbox-window-manager -use_cursor no -use_titlebar no 方式启动的窗口管理器才是全屏无标题栏的。
+默认情况下startx会由/etc/init.d/xinit/xinitrc程序中调用/etc/X11/Xsession 程序。 但是Xsession 不能直接带参数启动x-window-manager， 所以我们采用自定义xsession的方式实现待参数运行并且加入其它启动程序. 参考/etc/X11/Xsession.d/50x11-common_determine-startup 的逻辑，创建/root/.xsession 文件，将会设置为$STARTUP 变量，然后在/etc/X11/Xsession.d/99x11-common_start 中exec $STARTUP .
+
+修改方法：
+首先确认/etc/X11/Xsession.options 文件中包含allow-user-xsession 一行。
+然后创建并修改自定义脚本 chmod +x /root/.xsession，其内容如下:
+#!/bin/bash
+matchbox-window-manager -use_cursor no -use_titlebar no &
+sleep 1 & firefox
+
+执行startx 可以看到全屏的firefox。可以预先设置默认主页。
+此后在其他ssh会话中启动的任何程序都是全屏并且没有titlebar的。需要程序自己退出或者我们后面用快捷键杀死进程。
+
+3.2.	自动登录[nodm]
+apt-get install nodm
+然后修改/etc/default/nodm , 设置启动之后自动以root登录并且启动Session管理器
+
+NODM_ENABLED=true
+NODM_USER=root
+
+设置graphical.target为systemd的默认target
+#systemctl set-default graphical.target
+Removed symlink /etc/systemd/system/default.target.
+Created symlink from /etc/systemd/system/default.target to /lib/systemd/system/graphical.target.
+
+通过systemctl enable nodm 设置nodm默认启动以root登录并启动/etc/X11/Xsession程序
+
+# systemctl enable nodm
+Synchronizing state for nodm.service with sysvinit using update-rc.d...
+Executing /usr/sbin/update-rc.d nodm defaults
+Executing /usr/sbin/update-rc.d nodm enable
+Failed to execute operation: No such file or directory  { 此处待分析}
+
+手工在命令行下测试nodm，应该可以自动启动到firefox全屏窗口。
+重启系统，验证系统自动通过nodm启动matchbox 会话并且自动启动firefox进程。
+
+3.3.	参考资料
+全屏问题：
+Matchbox
+http://superuser.com/questions/219511/browser-instead-of-window-manager
+startx /usr/bin/google-chrome --kiosk
+
+http://www.linuxquestions.org/questions/linux-software-2/x-app-without-a-window-manager-not-true-fullscreen-193317/
+I'm using 1024x768 also. I just had a look and I didn't use javascript in the end, the only thing I needed was a plugin called "Real-Kiosk" which seems to be renamed to "R-kiosk" and can be found here:
+
+https://addons.mozilla.org/en-US/firefox/addon/1659
+
+https://github.com/vingtetun/Pyro-Desktop
+
+Using pygame is probably the easiest way of displaying an image fullscreen on the Linux framebuffer or on the X Windows root window (i.e. without a window manager).
+
+4.	其他软件
+4.1.	安装spice [virt-viewer]
+# 添加源 /etc/apt/souces.list
+deb http://ftp.de.debian.org/debian wheezy main
+apt-get update
+gpg --keyserver keyserver.ubuntu.com --recv-keys 8B48AD6246925553
+gpg --armor --export 46925553 | apt-key add -
+gpg --keyserver keyserver.ubuntu.com --recv-keys 6FB2A1C265FFB764
+gpg --armor --export 65FFB764 | apt-key add -
+gpg --keyserver keyserver.ubuntu.com --recv-keys 7638D0442B90D010
+gpg --armor --export 2B90D010 | apt-key add -
+# 加入这个源为了安装xulrunner，安装完后可以删除该源
+
+git clone git://anongit.freedesktop.org/spice/spice-xpi
+apt-get install libgtk2.0-dev xulrunner-24.0 xulrunner-dev zip
+./autogen.sh
+./configure --enable-xpi
+make
+cp SpiceXPI/dist/plugins/npSpiceConsole.so /usr/lib/firefox/browser/plugins/
+mkdir -p /usr/libexec/
+cat > /usr/libexec/spice-xpi-client-remote-viewer <<EOF
+#!/bin/sh
+
+logger -t spice "starting remote-viewer --spice-controller $@..."
+env | logger -t spice
+exec remote-viewer -k --spice-controller "$@" 2>&1 | logger -t spice
+logger -t spice "remote-viewer execution failed"
+EOF
+chmod +x /usr/libexec/spice-xpi-client-remote-viewer
+ln -sf /usr/libexec/spice-xpi-client-remote-viewer /etc/alternatives/spice-xpi-client
+ln -sf /etc/alternatives/spice-xpi-client /usr/libexec/spice-xpi-client
+
+git clone http://anongit.freedesktop.org/git/spice/usbredir.git
+apt-get install libusb-1.0-0-dev
+cd usbredir
+./autogen.sh
+make
+make install
+ldconfig
+
+git clone http://anongit.freedesktop.org/git/spice/spice-gtk.git
+apt-get install gtk-doc-tools python-six python-pyparsing libgtk2.0-dev libgtk-3-dev libgudev-1.0-dev libpulse-dev libtext-csv-perl valac-0.20 libacl1-dev libxml2-dev libssl-dev libjpeg8-dev libvala-0.22-dev
+cd spice-gtk
+git checkout v0.29
+./autogen.sh
+./configure --enable-vala=yes --enable-gtk-doc=no --enable-usbredir=yes
+sed -i "s/-Werror//" Makefile
+sed -i "s/-Werror//" src/Makefile
+make
+make install
+cd spice-common
+make install
+cd spice-protocol
+make install
+ldconfig
+
+git clone https://git.fedorahosted.org/git/virt-viewer.git
+git checkout v2.0
+aclocal
+./autogen.sh
+make
+make install
+
+4.2.	Rdesktop
+wget http://nchc.dl.sourceforge.net/project/rdesktop/rdesktop/1.8.3/rdesktop-1.8.3.tar.gz
+tar -xf rdesktop-1.8.3.tar.gz
+cd rdesktop-1.8.3
+apt-get install libssl-dev
+./configure --disable-credssp --disable-smartcard
+make && make install
+ln -s /usr/local/bin/rdesktop /usr/bin/rdesktop
+rdesktop 192.168.0.85 -u administrator -p 123456 -A "C:\Program Files\ThinLinc\WTSTools\seamlessrdpshell.exe" -s "C:\Windows\System32\calc" -a 16
+
+4.3.	系统热键[triggerhappy]
+apt-get install triggerhappy
+
+然后修改/etc/default/triggerhappy, 开启DAEMON_OPTS="--user root" .
+然后创建/etc/triggerhappy/triggers.d/virtfan.conf  内容如下
+KEY_F11+KEY_LEFTSHIFT 1 killall virt-viewer rdesktop remote-viewer   # press shift first & 组合键+不带空格
+KEY_F10 1 killall virt-viewer rdesktop remote-viewer
+
+重启thd服务 /etc/init.d/triggerhappy restart
+
+之后在控制台上面的按键即可被快捷键处理
+
+一般，需要定义如下的热键：
+功能			热键		说明
+退出virt-viewer	SHIFT+F11
+退出rdesktop
+刷新/进入 主页
+about:config
+
+如果需要高级配置，可以使用不同的model组合，不同的model下面的hotkey可以不同。
+
+4.4.	xfreerdp
+apt-get install freerdp-x11
+
+5.	vfd (thin client server)
+apt-get install python-flask gdebi  # netselect-apt
+git clone git://192.168.0.110/virtcloud/vDeskTerminal.git
+cd vDeskTerminal
+./packaging
+dpkg -i vfd_0.1-1.deb
+# install path /opt/vfd/
+# os update:
+#  put update.tgz into root directory of the removable devices
+#  - insert removable devices to virtfan thin client
+#  - operate on client
+
+[附录]  USB版(x86)制作流程简记
+install ubuntu-14.04.3-server-amd64.iso to USB [by VMware Workstation]
+apt-get install xinit matchbox firefox    # xorg-dev ssh
+确认/etc/X11/Xsession.options中包含allow-user-xsession一行
+创建并修改自定义脚本 chmod +x /root/.xsession
+内容如下:
+#!/bin/bash
+matchbox-window-manager -use_cursor no -use_titlebar no &
+sleep 1 & firefox
+apt-get install python-flask
+apt-get install git gdebi
+git clone git://192.168.0.110/virtcloud/vDeskClient-Linux.git
+./packaging
+dpkg -i vfd_0.1-2.deb
+apt-get install fonts-wqy-zenhei
+Edit /etc/default/grub
+GRUB_CMDLINE_LINUX_DEFAULT="quiet consoleblank=0"
+sudo update-grub && reboot
+Set firefox setting, homepage , not remember password ...
+Install firefox add-ons
+  https://addons.mozilla.org/en-us/firefox/addon/status-4-evar/
+  https://addons.mozilla.org/en-US/firefox/addon/1659
+apt-get install nodm
+修改/etc/default/nodm
+  NODM_ENABLED=true
+  NODM_USER=root
+安装spice-gtk, spice-xpi, usbredir, virt-viewer, 详见[4]
+apt-get install triggerhappy
+修改/etc/default/triggerhappy, 开启DAEMON_OPTS="--user root"
+创建/etc/triggerhappy/triggers.d/virtfan.conf
+    KEY_F11+KEY_LEFTSHIFT 1 killall virt-viewer rdesktop remote-viewer   # press shift first
+

@@ -1,0 +1,132 @@
+conncenter.desktop	/opt/Citrix/ICAClient/util/conncenter -icaroot /opt/Citrix/ICAClient			true
+libreoffice-xsltfilter.desktop	libreoffice %U			true
+ibus-setup-table.desktop	/usr/lib/ibus/ibus-setup-table			true
+shotwell.desktop	shotwell %U			false
+unity-deja-dup-panel.desktop	unity-control-center deja-dup		Unity;	false
+remmina.desktop	remmina			false
+apturl.desktop	apturl %u			true
+display-im6.desktop	/usr/bin/display-im6 %f			false
+libreoffice-startcenter.desktop	libreoffice %U	libreoffice-startcenter		false
+software-properties-gtk.desktop	software-properties-gtk			false
+reboot.desktop	gnome-session-quit --reboot			false
+unity-activity-log-manager-panel.desktop	unity-control-center activity-log-manager		Unity;	false
+update-accounts.desktop	/usr/lib/x86_64-linux-gnu/update-accounts			true
+ibus-setup.desktop	ibus-setup			false
+new_store.desktop	/opt/Citrix/ICAClient/util/new_store -icaroot /opt/Citrix/ICAClient %f			true
+unity-credentials-panel.desktop	unity-control-center credentials		Unity;	false
+totem.desktop	totem %U			false
+apport-gtk.desktop	/usr/share/apport/apport-gtk -c %f			true
+unity-datetime-panel.desktop	unity-control-center datetime		Unity;	false
+gnome-system-monitor.desktop	gnome-system-monitor			false
+vino-preferences.desktop	vino-preferences		Unity;	false
+system-config-printer.desktop	system-config-printer			false
+gnome-sudoku.desktop	gnome-sudoku			false
+deja-dup-preferences.desktop	deja-dup-preferences			false
+debian-xterm.desktop	xterm			false
+unity-mouse-panel.desktop	unity-control-center mouse		Unity;	false
+evince-previewer.desktop	evince-previewer %U			true
+gnome-calculator.desktop	gnome-calculator			false
+libreoffice-draw.desktop	libreoffice --draw %U	libreoffice-draw		false
+unity-network-panel.desktop	unity-control-center network		Unity;	false
+nautilus-home.desktop	nautilus --new-window %U		GNOME;Unity;	true
+evince.desktop	evince %U			false
+seahorse.desktop	/usr/bin/seahorse			false
+org.gnome.Software.desktop	gnome-software %U			false
+display-im6.q16.desktop	/usr/lib/x86_64-linux-gnu/ImageMagick-6.8.9/bin-Q16/display %f			false
+shotwell-viewer.desktop	shotwell %f			true
+im-config.desktop	im-config		KDE;GNOME;	false
+hplj1020.desktop	/usr/share/foo2zjs/hplj10xx_gui.tcl			true
+configmgr.desktop	/opt/Citrix/ICAClient/util/configmgr -icaroot /opt/Citrix/ICAClient			true
+gnome-mines.desktop	gnome-mines			false
+unitywebappsqmllauncher.desktop	/usr/bin/unity-webapps-qml-launcher $@			true
+deja-dup.desktop	deja-dup --backup			true
+gkbd-keyboard-display.desktop	gkbd-keyboard-display		GNOME;	true
+unity-screen-panel.desktop	unity-control-center screen		Unity;	false
+org.gnome.font-viewer.desktop	gnome-font-viewer %u			false
+software-properties-gnome.desktop	software-properties-gtk		GNOME;	false
+gcr-viewer.desktop	/usr/bin/gcr-viewer			true
+nautilus-folder-handler.desktop	nautilus --new-window %U		GNOME;Unity;	true
+unity-sound-panel.desktop	unity-control-center sound		Unity;	false
+nautilus-autorun-software.desktop	nautilus-autorun-software %u			true
+gnome-system-log.desktop	gnome-system-log-pkexec			false
+unity-region-panel.desktop	unity-control-center region		Unity;	false
+nm-applet.desktop	nm-applet			true
+python3.5.desktop	/usr/bin/python3.5			true
+org.gnome.Screenshot.desktop	gnome-screenshot --interactive			false
+webbrowser-app.desktop	webbrowser-app %u			false
+python2.7.desktop	/usr/bin/python2.7			true
+orca.desktop	orca --replace			false
+unity-control-center.desktop	unity-control-center --overview		Unity;	false
+onboard.desktop	onboard			false
+software-properties-drivers.desktop	/usr/bin/software-properties-gtk --open-tab=4			false
+unity-bluetooth-panel.desktop	unity-control-center bluetooth		Unity;	false
+libreoffice-calc.desktop	libreoffice --calc %U	libreoffice-calc		false
+vim.desktop	vim %F			false
+org.gnome.Calendar.desktop	gnome-calendar			false
+unity-universal-access-panel.desktop	unity-control-center universal-access		Unity;	false
+libreoffice-writer.desktop	libreoffice --writer %U	libreoffice-writer		false
+org.gnome.Nautilus.desktop	nautilus --new-window %U		Unity;	false
+libreoffice-math.desktop	libreoffice --math %U	libreoffice-math		false
+credentials-preferences.desktop	credentials-preferences			false
+ccsm.desktop	ccsm			false
+org.gnome.gedit.desktop	gedit %U			true
+unity-color-panel.desktop	unity-control-center color		Unity;	false
+compiz.desktop	compiz			true
+unity-user-accounts-panel.desktop	unity-control-center user-accounts		Unity;	false
+logout.desktop	gnome-session-quit --logout			false
+nautilus-classic.desktop	nautilus --no-default-window --force-desktop		GNOME;	true
+gcr-prompter.desktop	/usr/lib/gcr/gcr-prompter			true
+org.gnome.Cheese.desktop	cheese			true
+gnome-session-properties.desktop	gnome-session-properties		GNOME;Unity;	false
+unity-power-panel.desktop	unity-control-center power		Unity;	false
+gnome-disk-image-mounter.desktop	gnome-disk-image-mounter %U			true
+activity-log-manager.desktop	activity-log-manager			false
+gnome-user-share-properties.desktop	gnome-file-share-properties		Unity;	false
+selfservice.desktop	/opt/Citrix/ICAClient/selfservice --icaroot /opt/Citrix/ICAClient			false
+nautilus-connect-server.desktop	nautilus-connect-server			true
+language-selector.desktop	/usr/bin/gnome-language-selector			false
+update-manager.desktop	/usr/bin/update-manager			false
+thunderbird.desktop	thunderbird %u			false
+eog.desktop	eog %U			false
+gnome-software-local-file.desktop	gnome-software --local-filename=%f			true
+gedit.desktop	gedit %U			false
+unity-display-panel.desktop	unity-control-center display		Unity;	false
+file-roller.desktop	file-roller %U			false
+mount-archive.desktop	/usr/lib/gvfs/gvfsd-archive file=%u			true
+rhythmbox.desktop	rhythmbox %U			false
+vino-server.desktop	/usr/lib/vino/vino-server --sm-disable		Unity;	true
+usb-creator-gtk.desktop	usb-creator-gtk			false
+checkbox-converged.desktop	qmlscene --settings=/usr/share/checkbox-converged/settings.json $@ /usr/share/checkbox-converged/checkbox-touch.qml			false
+gnome-power-statistics.desktop	gnome-power-statistics		GNOME;Unity;	false
+rhythmbox-device.desktop	rhythmbox-client --select-source %U			true
+org.gnome.baobab.desktop	baobab			false
+simple-scan.desktop	simple-scan			false
+unity-wacom-panel.desktop	unity-control-center wacom		Unity;	false
+shutdown.desktop	gnome-session-quit --power-off			false
+yelp.desktop	yelp %u		GNOME;Unity;	false
+unity-appearance-panel.desktop	unity-control-center appearance		Unity;	false
+nautilus.desktop	nautilus --new-window %U			false
+unity-info-panel.desktop	unity-control-center info		Unity;	false
+sol.desktop	/usr/games/sol			false
+nm-connection-editor.desktop	nm-connection-editor			false
+wfica.desktop	/opt/Citrix/ICAClient/wfica -icaroot /opt/Citrix/ICAClient %f	Wfica		true
+gnome-system-monitor-kde.desktop	gnome-system-monitor		KDE;	false
+gnome-terminal.desktop	gnome-terminal		GNOME;Unity;	false
+debian-uxterm.desktop	uxterm			false
+unity-keyboard-panel.desktop	unity-control-center keyboard		Unity;	false
+gnome-mahjongg.desktop	gnome-mahjongg			false
+org.gnome.DiskUtility.desktop	gnome-disks			false
+org.gnome.FileRoller.desktop	file-roller %U			true
+gucharmap.desktop	gucharmap			false
+onboard-settings.desktop	onboard-settings			false
+transmission-gtk.desktop	transmission-gtk %U			false
+xdiagnose.desktop	xdiagnose-pkexec			false
+bluetooth-sendto.desktop	bluetooth-sendto			true
+libreoffice-impress.desktop	libreoffice --impress %U	libreoffice-impress		false
+cheese.desktop	cheese			false
+ubuntu-amazon-default.desktop	unity-webapps-runner --amazon --app-id=ubuntu-amazon-default			false
+org.gnome.Totem.desktop	totem %U			true
+gnome-disk-image-writer.desktop	gnome-disks --restore-disk-image %U			true
+signon-ui.desktop	/usr/bin/signon-ui			true
+firefox.desktop	firefox %u			false
+gnome-user-share-webdav.desktop	/usr/lib/gnome-user-share/gnome-user-share-webdav		GNOME;Unity;	true
